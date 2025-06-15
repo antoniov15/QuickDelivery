@@ -131,6 +131,7 @@ namespace QuickDelivery.Api.Controllers
 
                 // Update last login time
                 user.LastLoginAt = DateTime.UtcNow;
+                user.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
 
                 var userDto = new UserDto

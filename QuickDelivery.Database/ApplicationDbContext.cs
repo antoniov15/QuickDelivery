@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuickDelivery.Core.Entities;
 using QuickDelivery.Core.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuickDelivery.Database
 {
@@ -129,7 +127,7 @@ namespace QuickDelivery.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Many-to-many configuration între Product și Category
+            // Many-to-many configuration intre Product și Category
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Categories)
                 .WithMany(c => c.Products)
@@ -168,7 +166,9 @@ namespace QuickDelivery.Database
                     Role = UserRole.Admin,
                     IsActive = true,
                     IsEmailVerified = true,
-                    CreatedAt = staticDate
+                    CreatedAt = staticDate,
+                    UpdatedAt = null,
+                    LastLoginAt = null
                 }
             );
 
@@ -182,6 +182,9 @@ namespace QuickDelivery.Database
                     City = "Bucuresti",
                     PostalCode = "100001",
                     Country = "Romania",
+                    Latitude = null,
+                    Longitude = null,
+                    Instructions = null,
                     IsDefault = true,
                     CreatedAt = staticDate
                 }
