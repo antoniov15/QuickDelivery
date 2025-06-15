@@ -152,10 +152,12 @@ using (var scope = app.Services.CreateScope())
     try
     {
         // apply migrations
-        context.Database.Migrate();
+        await context.Database.MigrateAsync();
         logger.LogInformation("Database migration completed successfully.");
 
         // Seed many-to-many relationships
+        await context.SeedManyToManyRelationshipsAsync(logger);
+        logger.LogInformation("Data seeding completed successfully.");
     }
     catch (Exception ex)
     {
