@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuickDelivery.Core.Entities;
 using QuickDelivery.Core.Enums;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuickDelivery.Database
 {
@@ -127,6 +129,20 @@ namespace QuickDelivery.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // Many-to-many configuration între Product și Category
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Categories)
+                .WithMany(c => c.Products)
+                .UsingEntity(j => j.ToTable("ProductCategories")); // Numele tabelei de legătură
+
+            // Seed data pentru Categories
+            modelBuilder.Entity<Category>().HasData(
+                new Category { CategoryId = 1, Name = "Fast Food", Description = "Quick meals and snacks" },
+                new Category { CategoryId = 2, Name = "Pizza", Description = "Various pizza types" },
+                new Category { CategoryId = 3, Name = "Asian Food", Description = "Asian cuisine" },
+                new Category { CategoryId = 4, Name = "Desserts", Description = "Sweet treats" }
+                );
+            
             // Seed data
             SeedData(modelBuilder);
         }

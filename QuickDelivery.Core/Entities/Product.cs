@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QuickDelivery.Core.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QuickDelivery.Core.Entities
@@ -33,7 +34,7 @@ namespace QuickDelivery.Core.Entities
 
         public int StockQuantity { get; set; } = 0;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
 
@@ -43,5 +44,6 @@ namespace QuickDelivery.Core.Entities
 
         // Navigation properties
         public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+        public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
     }
 }
