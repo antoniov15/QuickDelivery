@@ -21,7 +21,7 @@ namespace QuickDelivery.Core.Entities
 
         public bool IsActive { get; set; } = true;
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         // Navigation property pentru relația many-to-many
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();

@@ -169,6 +169,23 @@ namespace QuickDelivery.Database
                     CreatedAt = staticDate,
                     UpdatedAt = null,
                     LastLoginAt = null
+                },
+
+                // partner for testing
+                new User
+                {
+                    UserId = 2,
+                    FirstName = "Restaurant",
+                    LastName = "Owner",
+                    Email = "partner@restaurant.com",
+                    PhoneNumber = "+40123456790",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Partner,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate,
+                    UpdatedAt = null,
+                    LastLoginAt = null
                 }
             );
 
@@ -187,6 +204,142 @@ namespace QuickDelivery.Database
                     Instructions = null,
                     IsDefault = true,
                     CreatedAt = staticDate
+                },
+
+                new Address
+                {
+                    AddressId = 2,
+                    UserId = 2,
+                    Street = "Strada Restaurantului 5",
+                    City = "Bucuresti",
+                    PostalCode = "100002",
+                    Country = "Romania",
+                    Latitude = null,
+                    Longitude = null,
+                    Instructions = null,
+                    IsDefault = true,
+                    CreatedAt = staticDate
+                }
+            );
+
+            // Seed partner
+            modelBuilder.Entity<Partner>().HasData(
+                new Partner
+                {
+                    PartnerId = 1,
+                    UserId = 2,
+                    BusinessName = "Delicious Restaurant",
+                    Description = "Best food in town",
+                    Website = null,
+                    LogoUrl = null,
+                    AddressId = 2,
+                    OpenTime = new TimeSpan(8, 0, 0),  // 08:00
+                    CloseTime = new TimeSpan(22, 0, 0), // 22:00
+                    AverageRating = 4.5m,
+                    TotalOrders = 0,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                }
+            );
+
+            // Seed categories for Many-to-Many relationship
+            modelBuilder.Entity<Category>().HasData(
+                new Category
+                {
+                    CategoryId = 1,
+                    Name = "Fast Food",
+                    Description = "Quick meals and snacks",
+                    IconUrl = null,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+                new Category
+                {
+                    CategoryId = 2,
+                    Name = "Pizza",
+                    Description = "Various pizza types",
+                    IconUrl = null,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+                new Category
+                {
+                    CategoryId = 3,
+                    Name = "Asian Food",
+                    Description = "Asian cuisine",
+                    IconUrl = null,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+                new Category
+                {
+                    CategoryId = 4,
+                    Name = "Desserts",
+                    Description = "Sweet treats",
+                    IconUrl = null,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                }
+            );
+
+
+            // Seed products
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    ProductId = 1,
+                    PartnerId = 1,
+                    Name = "Margherita Pizza",
+                    Description = "Classic pizza with tomato sauce, mozzarella and basil",
+                    Price = 25.50m,
+                    ImageUrl = null,
+                    Category = "Pizza", // This is the old string category
+                    IsAvailable = true,
+                    StockQuantity = 50,
+                    CreatedAt = staticDate,
+                    UpdatedAt = null
+                },
+                new Product
+                {
+                    ProductId = 2,
+                    PartnerId = 1,
+                    Name = "Cheeseburger",
+                    Description = "Juicy beef burger with cheese",
+                    Price = 18.00m,
+                    ImageUrl = null,
+                    Category = "Fast Food",
+                    IsAvailable = true,
+                    StockQuantity = 30,
+                    CreatedAt = staticDate,
+                    UpdatedAt = null
+                },
+                new Product
+                {
+                    ProductId = 3,
+                    PartnerId = 1,
+                    Name = "Chicken Pad Thai",
+                    Description = "Traditional Thai noodles with chicken",
+                    Price = 22.00m,
+                    ImageUrl = null,
+                    Category = "Asian Food",
+                    IsAvailable = true,
+                    StockQuantity = 25,
+                    CreatedAt = staticDate,
+                    UpdatedAt = null
+                },
+                new Product
+                {
+                    ProductId = 4,
+                    PartnerId = 1,
+                    Name = "Chocolate Cake",
+                    Description = "Rich chocolate cake with cream",
+                    Price = 15.00m,
+                    ImageUrl = null,
+                    Category = "Desserts",
+                    IsAvailable = true,
+                    StockQuantity = 20,
+                    CreatedAt = staticDate,
+                    UpdatedAt = null
                 }
             );
         }
