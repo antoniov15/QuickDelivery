@@ -3,6 +3,9 @@ using QuickDelivery.Core.Entities;
 using QuickDelivery.Core.Interfaces.Services;
 using QuickDelivery.Database;
 using Microsoft.EntityFrameworkCore;
+using QuickDelivery.Core.DTOs.Common;
+using QuickDelivery.Core.DTOs.Products;
+using System.Linq;
 
 namespace QuickDelivery.Infrastructure.Services
 {
@@ -53,11 +56,10 @@ namespace QuickDelivery.Infrastructure.Services
             });
         }
 
-        // NEW methods for many to many relationship
+        // OLD methods for backwards compatibility
 
         /// <summary>
-        /// Gets all products with their associated categories (Many-to-Many)
-        /// This is the main endpoint required by the assignment
+        /// Gets all products with their associated categories (Many-to-Many) - Original Method
         /// </summary>
         public async Task<IEnumerable<ProductWithCategoriesDto>> GetProductsWithCategoriesAsync()
         {
@@ -103,6 +105,104 @@ namespace QuickDelivery.Infrastructure.Services
             // Process/map the data
             return products.Select(product => MapToProductWithCategoriesDto(product));
         }
+
+        // NEW -- Advanced filtering, pagination and sorting
+
+        /// <summary>
+        /// Gets products with categories using advanced filtering, pagination, and sorting
+        /// </summary>
+        public async Task<PaginatedResult<ProductWithCategoriesDto>> GetProductsWithCategoriesAsync(ProductQueryParameters parameters)
+        {
+            var query = _context.Products
+                .Include(p => p.Categories)
+                .Include(p => p.Partner)
+                .AsQueryable();
+
+            // FILTERING 
+            // by search term (name or description)
+            if (!string.IsNullOrWhiteSpace(parameters.SearchTerm))
+            {
+                var searchTerm = parameters.SearchTerm.ToLower();
+                query = query.Where(p =>
+                    p.Name.ToLower().Contains(searchTerm) ||
+                    (p.Description != null && p.Description.ToLower().Contains(searchTerm)));
+            }
+
+            // by price range
+            if (parameters.MinPrice.HasValue)
+            {
+                query = query.Where(p => p.Price >= parameters.MinPrice.Value);
+            }
+
+            if (parameters.MaxPrice.HasValue)
+            {
+                query = query.Where(p => p.Price <= parameters.MaxPrice.Value);
+            }
+
+            // by availability
+            if (parameters.IsAvailable.HasValue)
+            {
+                query = query.Where(p => p.IsAvailable == parameters.IsAvailable.Value);
+            }
+
+            // by category name
+            if (!string.IsNullOrWhiteSpace(parameters.CategoryName))
+            {
+                query = query.Where(p => p.Categories.Any(c =>
+                    c.Name.ToLower().Contains(parameters.CategoryName.ToLower())));
+            }
+
+            // by partner name
+            if (!string.IsNullOrWhiteSpace(parameters.PartnerName))
+            {
+                query = query.Where(p => p.Partner != null &&
+                    p.Partner.BusinessName.ToLower().Contains(parameters.PartnerName.ToLower()));
+            }
+
+            // SORTING
+            query = parameters.SortBy.ToLower() switch
+            {
+                "name" => parameters.SortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.Name)
+                    : query.OrderBy(p => p.Name),
+
+                "price" => parameters.SortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.Price)
+                    : query.OrderBy(p => p.Price),
+
+                "createdat" => parameters.SortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.CreatedAt)
+                    : query.OrderBy(p => p.CreatedAt),
+
+                "stockquantity" => parameters.SortOrder.ToLower() == "desc"
+                    ? query.OrderByDescending(p => p.StockQuantity)
+                    : query.OrderBy(p => p.StockQuantity),
+
+                _ => query.OrderBy(p => p.Name) // Default sorting by name
+            };
+
+            // Get total count before pagination
+            var totalCount = await query.CountAsync();
+
+            // PAGINATION
+            var products = await query
+                .Skip(parameters.Skip)
+                .Take(parameters.Take)
+                .ToListAsync();
+
+            // Map to DTOs
+            var productDtos = products.Select(product => MapToProductWithCategoriesDto(product));
+
+            // Return paginated result
+            return PaginatedResult<ProductWithCategoriesDto>.Create(
+                productDtos,
+                totalCount,
+                parameters.Page,
+                parameters.PageSize
+            );
+        }
+
+        // OLD methods for backwards compatibility in continuare
 
         /// <summary>
         /// Private method for mapping entities to DTOs (data processing as required by assignment)

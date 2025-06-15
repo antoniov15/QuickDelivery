@@ -1,4 +1,6 @@
 ﻿using QuickDelivery.Core.DTOs;
+using QuickDelivery.Core.DTOs.Common;
+using QuickDelivery.Core.DTOs.Products;
 
 namespace QuickDelivery.Core.Interfaces.Services
 {
@@ -11,5 +13,8 @@ namespace QuickDelivery.Core.Interfaces.Services
         Task<IEnumerable<ProductWithCategoriesDto>> GetProductsWithCategoriesAsync();
         Task<ProductWithCategoriesDto?> GetProductWithCategoriesByIdAsync(int productId);
         Task<IEnumerable<ProductWithCategoriesDto>> GetProductsByCategoryAsync(int categoryId);
+
+        // advanced filtering, pagination and sorting
+        Task<PaginatedResult<ProductWithCategoriesDto>> GetProductsWithCategoriesAsync(ProductQueryParameters parameters);
     }
 }
