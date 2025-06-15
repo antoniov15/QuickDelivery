@@ -19,6 +19,7 @@ namespace QuickDelivery.Database
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -127,33 +128,22 @@ namespace QuickDelivery.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Many-to-many configuration intre Product și Category
+            // MANY-TO-MANY CONFIGURATION BETWEEN PRODUCT AND CATEGORY
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Categories)
                 .WithMany(c => c.Products)
-                .UsingEntity(j => j.ToTable("ProductCategories")); // Numele tabelei de legătură
+                .UsingEntity(j => j.ToTable("ProductCategories"));
 
-            // Seed data pentru Categories
-            modelBuilder.Entity<Category>().HasData(
-                new Category { CategoryId = 1, Name = "Fast Food", Description = "Quick meals and snacks" },
-                new Category { CategoryId = 2, Name = "Pizza", Description = "Various pizza types" },
-                new Category { CategoryId = 3, Name = "Asian Food", Description = "Asian cuisine" },
-                new Category { CategoryId = 4, Name = "Desserts", Description = "Sweet treats" }
-                );
-            
-            // Seed data
+            // Call seed data method
             SeedData(modelBuilder);
         }
 
         private static void SeedData(ModelBuilder modelBuilder)
         {
-            // Date statice pentru a evita eroarea de model dinamic
             var staticDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-            // Hash static pre-generat pentru parola "admin123"
             var staticPasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO";
 
-            // Seed default admin user
+            // 1. USERS
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -162,16 +152,12 @@ namespace QuickDelivery.Database
                     LastName = "QuickDelivery",
                     Email = "admin@quickdelivery.com",
                     PhoneNumber = "+40123456789",
-                    PasswordHash = staticPasswordHash, // Hash static in loc de BCrypt.HashPassword
+                    PasswordHash = staticPasswordHash,
                     Role = UserRole.Admin,
                     IsActive = true,
                     IsEmailVerified = true,
-                    CreatedAt = staticDate,
-                    UpdatedAt = null,
-                    LastLoginAt = null
+                    CreatedAt = staticDate
                 },
-
-                // partner for testing
                 new User
                 {
                     UserId = 2,
@@ -183,13 +169,11 @@ namespace QuickDelivery.Database
                     Role = UserRole.Partner,
                     IsActive = true,
                     IsEmailVerified = true,
-                    CreatedAt = staticDate,
-                    UpdatedAt = null,
-                    LastLoginAt = null
+                    CreatedAt = staticDate
                 }
             );
 
-            // Seed default address for admin
+            // 2. ADDRESSES
             modelBuilder.Entity<Address>().HasData(
                 new Address
                 {
@@ -199,13 +183,9 @@ namespace QuickDelivery.Database
                     City = "Bucuresti",
                     PostalCode = "100001",
                     Country = "Romania",
-                    Latitude = null,
-                    Longitude = null,
-                    Instructions = null,
                     IsDefault = true,
                     CreatedAt = staticDate
                 },
-
                 new Address
                 {
                     AddressId = 2,
@@ -214,15 +194,12 @@ namespace QuickDelivery.Database
                     City = "Bucuresti",
                     PostalCode = "100002",
                     Country = "Romania",
-                    Latitude = null,
-                    Longitude = null,
-                    Instructions = null,
                     IsDefault = true,
                     CreatedAt = staticDate
                 }
             );
 
-            // Seed partner
+            // 3. PARTNERS
             modelBuilder.Entity<Partner>().HasData(
                 new Partner
                 {
@@ -230,11 +207,9 @@ namespace QuickDelivery.Database
                     UserId = 2,
                     BusinessName = "Delicious Restaurant",
                     Description = "Best food in town",
-                    Website = null,
-                    LogoUrl = null,
                     AddressId = 2,
-                    OpenTime = new TimeSpan(8, 0, 0),  // 08:00
-                    CloseTime = new TimeSpan(22, 0, 0), // 22:00
+                    OpenTime = new TimeSpan(8, 0, 0),
+                    CloseTime = new TimeSpan(22, 0, 0),
                     AverageRating = 4.5m,
                     TotalOrders = 0,
                     IsActive = true,
@@ -242,14 +217,13 @@ namespace QuickDelivery.Database
                 }
             );
 
-            // Seed categories for Many-to-Many relationship
+            // 4. CATEGORIES - ONLY HERE, NO DUPLICATES
             modelBuilder.Entity<Category>().HasData(
                 new Category
                 {
                     CategoryId = 1,
                     Name = "Fast Food",
                     Description = "Quick meals and snacks",
-                    IconUrl = null,
                     IsActive = true,
                     CreatedAt = staticDate
                 },
@@ -258,7 +232,6 @@ namespace QuickDelivery.Database
                     CategoryId = 2,
                     Name = "Pizza",
                     Description = "Various pizza types",
-                    IconUrl = null,
                     IsActive = true,
                     CreatedAt = staticDate
                 },
@@ -267,7 +240,6 @@ namespace QuickDelivery.Database
                     CategoryId = 3,
                     Name = "Asian Food",
                     Description = "Asian cuisine",
-                    IconUrl = null,
                     IsActive = true,
                     CreatedAt = staticDate
                 },
@@ -276,14 +248,12 @@ namespace QuickDelivery.Database
                     CategoryId = 4,
                     Name = "Desserts",
                     Description = "Sweet treats",
-                    IconUrl = null,
                     IsActive = true,
                     CreatedAt = staticDate
                 }
             );
 
-
-            // Seed products
+            // 5. PRODUCTS
             modelBuilder.Entity<Product>().HasData(
                 new Product
                 {
@@ -292,12 +262,10 @@ namespace QuickDelivery.Database
                     Name = "Margherita Pizza",
                     Description = "Classic pizza with tomato sauce, mozzarella and basil",
                     Price = 25.50m,
-                    ImageUrl = null,
-                    Category = "Pizza", // This is the old string category
+                    Category = "Pizza",
                     IsAvailable = true,
                     StockQuantity = 50,
-                    CreatedAt = staticDate,
-                    UpdatedAt = null
+                    CreatedAt = staticDate
                 },
                 new Product
                 {
@@ -306,12 +274,10 @@ namespace QuickDelivery.Database
                     Name = "Cheeseburger",
                     Description = "Juicy beef burger with cheese",
                     Price = 18.00m,
-                    ImageUrl = null,
                     Category = "Fast Food",
                     IsAvailable = true,
                     StockQuantity = 30,
-                    CreatedAt = staticDate,
-                    UpdatedAt = null
+                    CreatedAt = staticDate
                 },
                 new Product
                 {
@@ -320,12 +286,10 @@ namespace QuickDelivery.Database
                     Name = "Chicken Pad Thai",
                     Description = "Traditional Thai noodles with chicken",
                     Price = 22.00m,
-                    ImageUrl = null,
                     Category = "Asian Food",
                     IsAvailable = true,
                     StockQuantity = 25,
-                    CreatedAt = staticDate,
-                    UpdatedAt = null
+                    CreatedAt = staticDate
                 },
                 new Product
                 {
@@ -334,12 +298,10 @@ namespace QuickDelivery.Database
                     Name = "Chocolate Cake",
                     Description = "Rich chocolate cake with cream",
                     Price = 15.00m,
-                    ImageUrl = null,
                     Category = "Desserts",
                     IsAvailable = true,
                     StockQuantity = 20,
-                    CreatedAt = staticDate,
-                    UpdatedAt = null
+                    CreatedAt = staticDate
                 }
             );
         }

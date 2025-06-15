@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickDelivery.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialCreateWithCategories : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -322,21 +322,45 @@ namespace QuickDelivery.Database.Migrations
                 columns: new[] { "CategoryId", "CreatedAt", "Description", "IconUrl", "IsActive", "Name" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(7435), "Quick meals and snacks", null, true, "Fast Food" },
-                    { 2, new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(8418), "Various pizza types", null, true, "Pizza" },
-                    { 3, new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(8420), "Asian cuisine", null, true, "Asian Food" },
-                    { 4, new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(8422), "Sweet treats", null, true, "Desserts" }
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Quick meals and snacks", null, true, "Fast Food" },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Various pizza types", null, true, "Pizza" },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Asian cuisine", null, true, "Asian Food" },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Sweet treats", null, true, "Desserts" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "CreatedAt", "Email", "FirstName", "IsActive", "IsEmailVerified", "LastLoginAt", "LastName", "PasswordHash", "PhoneNumber", "ProfileImageUrl", "Role", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "admin@quickdelivery.com", "Admin", true, true, null, "QuickDelivery", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456789", null, 4, null });
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "admin@quickdelivery.com", "Admin", true, true, null, "QuickDelivery", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456789", null, 4, null },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "partner@restaurant.com", "Restaurant", true, true, null, "Owner", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456790", null, 3, null }
+                });
 
             migrationBuilder.InsertData(
                 table: "Addresses",
                 columns: new[] { "AddressId", "City", "Country", "CreatedAt", "Instructions", "IsDefault", "Latitude", "Longitude", "PostalCode", "Street", "UserId" },
-                values: new object[] { 1, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100001", "Strada Principala 1", 1 });
+                values: new object[,]
+                {
+                    { 1, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100001", "Strada Principala 1", 1 },
+                    { 2, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100002", "Strada Restaurantului 5", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Partners",
+                columns: new[] { "PartnerId", "AddressId", "AverageRating", "BusinessName", "CloseTime", "CreatedAt", "Description", "IsActive", "LogoUrl", "OpenTime", "TotalOrders", "UserId", "Website" },
+                values: new object[] { 1, 2, 4.5m, "Delicious Restaurant", new TimeSpan(0, 22, 0, 0, 0), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Best food in town", true, null, new TimeSpan(0, 8, 0, 0, 0), 0, 2, null });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "Category", "CreatedAt", "Description", "ImageUrl", "IsAvailable", "Name", "PartnerId", "Price", "StockQuantity", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, "Pizza", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Classic pizza with tomato sauce, mozzarella and basil", null, true, "Margherita Pizza", 1, 25.50m, 50, null },
+                    { 2, "Fast Food", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Juicy beef burger with cheese", null, true, "Cheeseburger", 1, 18.00m, 30, null },
+                    { 3, "Asian Food", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Traditional Thai noodles with chicken", null, true, "Chicken Pad Thai", 1, 22.00m, 25, null },
+                    { 4, "Desserts", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Rich chocolate cake with cream", null, true, "Chocolate Cake", 1, 15.00m, 20, null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",

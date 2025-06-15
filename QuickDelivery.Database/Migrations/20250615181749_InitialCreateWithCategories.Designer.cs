@@ -12,8 +12,8 @@ using QuickDelivery.Database;
 namespace QuickDelivery.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250615172520_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250615181749_InitialCreateWithCategories")]
+    partial class InitialCreateWithCategories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,6 +104,17 @@ namespace QuickDelivery.Database.Migrations
                             PostalCode = "100001",
                             Street = "Strada Principala 1",
                             UserId = 1
+                        },
+                        new
+                        {
+                            AddressId = 2,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDefault = true,
+                            PostalCode = "100002",
+                            Street = "Strada Restaurantului 5",
+                            UserId = 2
                         });
                 });
 
@@ -142,7 +153,7 @@ namespace QuickDelivery.Database.Migrations
                         new
                         {
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(7435),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Quick meals and snacks",
                             IsActive = true,
                             Name = "Fast Food"
@@ -150,7 +161,7 @@ namespace QuickDelivery.Database.Migrations
                         new
                         {
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(8418),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Various pizza types",
                             IsActive = true,
                             Name = "Pizza"
@@ -158,7 +169,7 @@ namespace QuickDelivery.Database.Migrations
                         new
                         {
                             CategoryId = 3,
-                            CreatedAt = new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(8420),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Asian cuisine",
                             IsActive = true,
                             Name = "Asian Food"
@@ -166,7 +177,7 @@ namespace QuickDelivery.Database.Migrations
                         new
                         {
                             CategoryId = 4,
-                            CreatedAt = new DateTime(2025, 6, 15, 17, 25, 20, 170, DateTimeKind.Utc).AddTicks(8422),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Sweet treats",
                             IsActive = true,
                             Name = "Desserts"
@@ -404,6 +415,22 @@ namespace QuickDelivery.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("Partners");
+
+                    b.HasData(
+                        new
+                        {
+                            PartnerId = 1,
+                            AddressId = 2,
+                            AverageRating = 4.5m,
+                            BusinessName = "Delicious Restaurant",
+                            CloseTime = new TimeSpan(0, 22, 0, 0, 0),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Best food in town",
+                            IsActive = true,
+                            OpenTime = new TimeSpan(0, 8, 0, 0, 0),
+                            TotalOrders = 0,
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Payment", b =>
@@ -500,6 +527,56 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("PartnerId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            Category = "Pizza",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Classic pizza with tomato sauce, mozzarella and basil",
+                            IsAvailable = true,
+                            Name = "Margherita Pizza",
+                            PartnerId = 1,
+                            Price = 25.50m,
+                            StockQuantity = 50
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            Category = "Fast Food",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Juicy beef burger with cheese",
+                            IsAvailable = true,
+                            Name = "Cheeseburger",
+                            PartnerId = 1,
+                            Price = 18.00m,
+                            StockQuantity = 30
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            Category = "Asian Food",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Traditional Thai noodles with chicken",
+                            IsAvailable = true,
+                            Name = "Chicken Pad Thai",
+                            PartnerId = 1,
+                            Price = 22.00m,
+                            StockQuantity = 25
+                        },
+                        new
+                        {
+                            ProductId = 4,
+                            Category = "Desserts",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Rich chocolate cake with cream",
+                            IsAvailable = true,
+                            Name = "Chocolate Cake",
+                            PartnerId = 1,
+                            Price = 15.00m,
+                            StockQuantity = 20
+                        });
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.User", b =>
@@ -575,6 +652,19 @@ namespace QuickDelivery.Database.Migrations
                             PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
                             PhoneNumber = "+40123456789",
                             Role = 4
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "partner@restaurant.com",
+                            FirstName = "Restaurant",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastName = "Owner",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456790",
+                            Role = 3
                         });
                 });
 
