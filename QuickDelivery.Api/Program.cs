@@ -16,7 +16,6 @@ using QuickDelivery.Database;
 using QuickDelivery.Database.Extensions;
 using QuickDelivery.Infrastructure.Repositories;
 using QuickDelivery.Infrastructure.Services;
-using QuickDelivery_DAWM.Middleware;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

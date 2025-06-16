@@ -56,6 +56,9 @@ namespace QuickDelivery.Core.Entities
         public virtual Partner? Partner { get; set; }
 
         [NotMapped]
+        public int? CustomerId => Customer?.CustomerId;
+
+        [NotMapped]
         public int? PartnerId => Partner?.PartnerId;
 
         public virtual ICollection<Order> OrdersAsCustomer { get; set; } = new List<Order>();

@@ -7,6 +7,7 @@ using QuickDelivery.Core.Interfaces.Services;
 using QuickDelivery.Core.Options;
 using System.Security.Cryptography;
 using System.Text;
+using BCrypt.Net;
 
 namespace QuickDelivery.Infrastructure.Services
 {
@@ -221,29 +222,19 @@ namespace QuickDelivery.Infrastructure.Services
 
         private string HashPassword(string password)
         {
-            using (var sha256 = SHA256.Create())
-            {
-                // Convertim șirul în matrice de bytes
-                byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-
-                // Calculăm hash-ul
-                byte[] hashBytes = sha256.ComputeHash(passwordBytes);
-
-                // Convertim matricea de bytes în șir
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    builder.Append(hashBytes[i].ToString("x2"));
-                }
-
-                return builder.ToString();
-            }
+            return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         private bool VerifyPassword(string password, string passwordHash)
         {
-            string hashedPassword = HashPassword(password);
-            return string.Equals(hashedPassword, passwordHash, StringComparison.OrdinalIgnoreCase);
+            try
+            {
+                return BCrypt.Net.BCrypt.Verify(password, passwordHash);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         #endregion
