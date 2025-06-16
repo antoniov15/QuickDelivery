@@ -88,7 +88,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses");
+                    b.ToTable("Addresses", (string)null);
 
                     b.HasData(
                         new
@@ -144,7 +144,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -237,7 +237,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Deliveries");
+                    b.ToTable("Deliveries", (string)null);
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Order", b =>
@@ -316,7 +316,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("PickupAddressId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.OrderItem", b =>
@@ -352,7 +352,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Partner", b =>
@@ -411,7 +411,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Partners");
+                    b.ToTable("Partners", (string)null);
 
                     b.HasData(
                         new
@@ -473,7 +473,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Payments");
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Product", b =>
@@ -523,7 +523,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("PartnerId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -634,7 +634,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

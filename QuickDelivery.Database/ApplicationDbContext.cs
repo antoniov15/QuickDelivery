@@ -87,6 +87,15 @@ namespace QuickDelivery.Database
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Customer configurations - FIX pentru relația User-Customer
+            modelBuilder.Entity<Customer>(entity =>
+            {
+                entity.HasOne(c => c.User)
+                    .WithOne(u => u.Customer)
+                    .HasForeignKey<Customer>(c => c.UserId)
+                    .OnDelete(DeleteBehavior.SetNull);
+            });
+
             // Product configurations
             modelBuilder.Entity<Product>(entity =>
             {
@@ -170,11 +179,141 @@ namespace QuickDelivery.Database
                     IsActive = true,
                     IsEmailVerified = true,
                     CreatedAt = staticDate
+                },
+
+                // Customer 1
+                new User
+                {
+                    UserId = 3,
+                    FirstName = "John",
+                    LastName = "Doe",
+                    Email = "john.doe@email.com",
+                    Username = "john_doe",
+                    PhoneNumber = "+40123456791",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Customer,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Customer 2
+                new User
+                {
+                    UserId = 4,
+                    FirstName = "Jane",
+                    LastName = "Smith",
+                    Email = "jane.smith@email.com",
+                    Username = "jane_smith",
+                    PhoneNumber = "+40123456792",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Customer,
+                    IsActive = true,
+                    IsEmailVerified = false, // Unverified email for testing
+                    CreatedAt = staticDate
+                },
+
+                // Deliverer 1
+                new User
+                {
+                    UserId = 5,
+                    FirstName = "Mike",
+                    LastName = "Johnson",
+                    Email = "mike.deliverer@email.com",
+                    Username = "mike_deliverer",
+                    PhoneNumber = "+40123456793",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Deliverer,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Deliverer 2
+                new User
+                {
+                    UserId = 6,
+                    FirstName = "Sarah",
+                    LastName = "Wilson",
+                    Email = "sarah.deliverer@email.com",
+                    Username = "sarah_deliverer",
+                    PhoneNumber = "+40123456794",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Deliverer,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Manager
+                new User
+                {
+                    UserId = 7,
+                    FirstName = "David",
+                    LastName = "Manager",
+                    Email = "manager@quickdelivery.com",
+                    Username = "david_manager",
+                    PhoneNumber = "+40123456795",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Manager,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Inactive Customer (for testing)
+                new User
+                {
+                    UserId = 8,
+                    FirstName = "Inactive",
+                    LastName = "User",
+                    Email = "inactive@email.com",
+                    Username = "inactive_user",
+                    PhoneNumber = "+40123456796",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Customer,
+                    IsActive = false, // Inactive for testing
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Second Partner
+                new User
+                {
+                    UserId = 9,
+                    FirstName = "Pizza",
+                    LastName = "Owner",
+                    Email = "pizza.owner@restaurant.com",
+                    Username = "pizza_owner",
+                    PhoneNumber = "+40123456797",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Partner,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // VIP Customer
+                new User
+                {
+                    UserId = 10,
+                    FirstName = "Maria",
+                    LastName = "Rodriguez",
+                    Email = "maria.vip@email.com",
+                    Username = "maria_vip",
+                    PhoneNumber = "+40123456798",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Customer,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate,
+                    LastLoginAt = DateTime.UtcNow.AddDays(-1) // Recent login
                 }
             );
 
             // 2. ADDRESSES
             modelBuilder.Entity<Address>().HasData(
+                // Admin address
                 new Address
                 {
                     AddressId = 1,
@@ -186,6 +325,8 @@ namespace QuickDelivery.Database
                     IsDefault = true,
                     CreatedAt = staticDate
                 },
+
+                // Restaurant address
                 new Address
                 {
                     AddressId = 2,
@@ -193,6 +334,87 @@ namespace QuickDelivery.Database
                     Street = "Strada Restaurantului 5",
                     City = "Bucuresti",
                     PostalCode = "100002",
+                    Country = "Romania",
+                    IsDefault = true,
+                    CreatedAt = staticDate
+                },
+
+                // John Doe addresses
+                new Address
+                {
+                    AddressId = 3,
+                    UserId = 3,
+                    Street = "Bulevardul Unirii 15",
+                    City = "Bucuresti",
+                    PostalCode = "100003",
+                    Country = "Romania",
+                    IsDefault = true,
+                    Instructions = "Apartament 4, et. 2",
+                    CreatedAt = staticDate
+                },
+
+                new Address
+                {
+                    AddressId = 4,
+                    UserId = 3,
+                    Street = "Strada Victoriei 25",
+                    City = "Bucuresti",
+                    PostalCode = "100004",
+                    Country = "Romania",
+                    IsDefault = false,
+                    Instructions = "Birou, et. 3",
+                    CreatedAt = staticDate
+                },
+
+                // Jane Smith address
+                new Address
+                {
+                    AddressId = 5,
+                    UserId = 4,
+                    Street = "Calea Floreasca 100",
+                    City = "Bucuresti",
+                    PostalCode = "100005",
+                    Country = "Romania",
+                    IsDefault = true,
+                    Instructions = "Bloc A, scara 1, apt. 15",
+                    CreatedAt = staticDate
+                },
+
+                // Mike Deliverer address
+                new Address
+                {
+                    AddressId = 6,
+                    UserId = 5,
+                    Street = "Strada Aviatorilor 8",
+                    City = "Bucuresti",
+                    PostalCode = "100006",
+                    Country = "Romania",
+                    IsDefault = true,
+                    CreatedAt = staticDate
+                },
+
+                // Maria VIP address
+                new Address
+                {
+                    AddressId = 7,
+                    UserId = 10,
+                    Street = "Bulevardul Herastrau 45",
+                    City = "Bucuresti",
+                    PostalCode = "100007",
+                    Country = "Romania",
+                    IsDefault = true,
+                    Instructions = "Vila, poarta alba",
+                    CreatedAt = staticDate
+                },
+
+                // Second restaurant address
+                new Address
+                {
+                    AddressId = 8,
+                    UserId = 9,
+                    Street = "Strada Pizzeriei 12",
+                    City = "Bucuresti",
+                    PostalCode = "100008",
                     Country = "Romania",
                     IsDefault = true,
                     CreatedAt = staticDate
@@ -211,6 +433,24 @@ namespace QuickDelivery.Database
                     OpenTime = new TimeSpan(8, 0, 0),
                     CloseTime = new TimeSpan(22, 0, 0),
                     AverageRating = 4.5m,
+                    TotalOrders = 0,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+
+                // New pizza restaurant
+                new Partner
+                {
+                    PartnerId = 2,
+                    UserId = 9,
+                    BusinessName = "Mario's Pizza Palace",
+                    Description = "Authentic Italian pizza made with love",
+                    Website = "https://mariospizza.com",
+                    LogoUrl = "https://example.com/mario-logo.png",
+                    AddressId = 8,
+                    OpenTime = new TimeSpan(10, 0, 0),
+                    CloseTime = new TimeSpan(23, 0, 0),
+                    AverageRating = 4.8m,
                     TotalOrders = 0,
                     IsActive = true,
                     CreatedAt = staticDate
@@ -301,6 +541,56 @@ namespace QuickDelivery.Database
                     Category = "Desserts",
                     IsAvailable = true,
                     StockQuantity = 20,
+                    CreatedAt = staticDate
+                },
+
+                // Products from Mario's Pizza Palace (Partner 2)
+                new Product
+                {
+                    ProductId = 5,
+                    PartnerId = 2,
+                    Name = "Pepperoni Pizza",
+                    Description = "Classic pepperoni pizza with mozzarella",
+                    Price = 28.00m,
+                    Category = "Pizza",
+                    IsAvailable = true,
+                    StockQuantity = 40,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 6,
+                    PartnerId = 2,
+                    Name = "Quattro Stagioni",
+                    Description = "Four seasons pizza with ham, mushrooms, olives and artichokes",
+                    Price = 32.00m,
+                    Category = "Pizza",
+                    IsAvailable = true,
+                    StockQuantity = 35,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 7,
+                    PartnerId = 2,
+                    Name = "Tiramisu",
+                    Description = "Traditional Italian dessert with coffee and mascarpone",
+                    Price = 18.00m,
+                    Category = "Desserts",
+                    IsAvailable = true,
+                    StockQuantity = 15,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 8,
+                    PartnerId = 2,
+                    Name = "Garlic Bread",
+                    Description = "Crispy bread with garlic butter and herbs",
+                    Price = 12.00m,
+                    Category = "Fast Food",
+                    IsAvailable = true,
+                    StockQuantity = 60,
                     CreatedAt = staticDate
                 }
             );
