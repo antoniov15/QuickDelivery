@@ -1,20 +1,21 @@
-using QuickDelivery.Core.Interfaces.Repositories;
-using QuickDelivery.Core.Interfaces.Services;
-using QuickDelivery.Infrastructure.Repositories;
-using QuickDelivery.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using QuickDelivery.Api.Middleware;
+using QuickDelivery.Core.Interfaces.Repositories;
+using QuickDelivery.Core.Interfaces.Services;
+using QuickDelivery.Core.Options;
 using QuickDelivery.Database;
 using QuickDelivery.Database.Extensions;
+using QuickDelivery.Infrastructure.Repositories;
+using QuickDelivery.Infrastructure.Services;
 using System.Text;
-using Microsoft.AspNetCore.Builder;
-using QuickDelivery.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,6 +125,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDeliveryService, DeliveryService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 // Register repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
