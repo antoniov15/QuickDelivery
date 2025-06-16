@@ -128,6 +128,119 @@ namespace QuickDelivery.Api.Controllers
         }
 
         /// <summary>
+        /// Update a product completely (replaces all fields)
+        /// </summary>
+        /// <param name="id">Product ID</param>
+        /// <param name="updateProductDto">Product update data</param>
+        /// <returns>Updated product with categories</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ApiResponse<ProductWithCategoriesDto>), 200)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 400)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 404)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 500)]
+        public async Task<ActionResult<ApiResponse<ProductWithCategoriesDto>>> UpdateProduct(int id, [FromBody] UpdateProductDto updateProductDto)
+        {
+            try
+            {
+                // Validate model state
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    return BadRequest(ApiResponse<object>.ErrorResult("Invalid product data", errors));
+                }
+
+                // Update the product
+                var updatedProduct = await _productService.UpdateProductAsync(id, updateProductDto);
+
+                if (updatedProduct == null)
+                {
+                    return NotFound(ApiResponse<object>.ErrorResult("Product not found"));
+                }
+
+                _logger.LogInformation("Product {ProductId} updated successfully by user. Updated fields: {@UpdateData}",
+                    id, updateProductDto);
+
+                return Ok(ApiResponse<ProductWithCategoriesDto>.SuccessResult(
+                    updatedProduct,
+                    "Product updated successfully"
+                ));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while updating product {ProductId} with data: {@UpdateData}",
+                    id, updateProductDto);
+                return StatusCode(500, ApiResponse<object>.ErrorResult("An error occurred while updating the product"));
+            }
+        }
+
+        /// <summary>
+        /// Update a product partially (updates only provided fields)
+        /// </summary>
+        /// <param name="id">Product ID</param>
+        /// <param name="updateProductDto">Partial product update data</param>
+        /// <returns>Updated product with categories</returns>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(typeof(ApiResponse<ProductWithCategoriesDto>), 200)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 400)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 404)]
+        [ProducesResponseType(typeof(ApiResponse<object>), 500)]
+        public async Task<ActionResult<ApiResponse<ProductWithCategoriesDto>>> PartialUpdateProduct(int id, [FromBody] UpdateProductDto updateProductDto)
+        {
+            try
+            {
+                // Validate model state
+                if (!ModelState.IsValid)
+                {
+                    var errors = ModelState.Values
+                        .SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToList();
+
+                    return BadRequest(ApiResponse<object>.ErrorResult("Invalid product data", errors));
+                }
+
+                // Validate that at least one field is provided for patch
+                if (updateProductDto.Name == null &&
+                    updateProductDto.Description == null &&
+                    updateProductDto.Price == null &&
+                    updateProductDto.ImageUrl == null &&
+                    updateProductDto.Category == null &&
+                    updateProductDto.IsAvailable == null &&
+                    updateProductDto.StockQuantity == null &&
+                    (updateProductDto.CategoryIds == null || !updateProductDto.CategoryIds.Any()))
+                {
+                    return BadRequest(ApiResponse<object>.ErrorResult("At least one field must be provided for partial update"));
+                }
+
+                // Update the product partially
+                var updatedProduct = await _productService.PartialUpdateProductAsync(id, updateProductDto);
+
+                if (updatedProduct == null)
+                {
+                    return NotFound(ApiResponse<object>.ErrorResult("Product not found"));
+                }
+
+                _logger.LogInformation("Product {ProductId} partially updated successfully by user. Updated fields: {@UpdateData}",
+                    id, updateProductDto);
+
+                return Ok(ApiResponse<ProductWithCategoriesDto>.SuccessResult(
+                    updatedProduct,
+                    "Product updated successfully"
+                ));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while partially updating product {ProductId} with data: {@UpdateData}",
+                    id, updateProductDto);
+                return StatusCode(500, ApiResponse<object>.ErrorResult("An error occurred while updating the product"));
+            }
+        }
+
+        /// <summary>
         /// Get products by category (Many-to-Many query)
         /// </summary>
         /// <param name="categoryId">Category ID</param>
@@ -156,7 +269,7 @@ namespace QuickDelivery.Api.Controllers
         }
 
         /// <summary>
-        /// Example endpoint for demonstrating different filtering options
+        /// Example endpoint for demonstrating different filtering and update options
         /// </summary>
         /// <returns>Usage examples</returns>
         [HttpGet("examples")]
@@ -165,8 +278,8 @@ namespace QuickDelivery.Api.Controllers
         {
             var examples = new
             {
-                message = "Product filtering, sorting, and pagination examples",
-                examples = new[]
+                message = "Product filtering, sorting, pagination and update examples",
+                filteringExamples = new[]
                 {
                     new {
                         description = "Get first page with 5 products, sorted by price descending",
@@ -187,6 +300,38 @@ namespace QuickDelivery.Api.Controllers
                     new {
                         description = "Combined filtering with pagination",
                         url = "/api/products?searchTerm=chicken&minPrice=15&isAvailable=true&page=1&pageSize=10&sortBy=createdAt&sortOrder=desc"
+                    }
+                },
+                updateExamples = new
+                {
+                    putExample = new
+                    {
+                        description = "Complete product update (PUT /api/products/{id})",
+                        method = "PUT",
+                        url = "/api/products/1",
+                        body = new
+                        {
+                            name = "Updated Product Name",
+                            description = "Updated description",
+                            price = 29.99,
+                            imageUrl = "https://example.com/updated-image.jpg",
+                            category = "Updated Category",
+                            isAvailable = true,
+                            stockQuantity = 50,
+                            categoryIds = new[] { 1, 2, 3 }
+                        }
+                    },
+                    patchExample = new
+                    {
+                        description = "Partial product update (PATCH /api/products/{id})",
+                        method = "PATCH",
+                        url = "/api/products/1",
+                        body = new
+                        {
+                            price = 39.99,
+                            isAvailable = false,
+                            stockQuantity = 0
+                        }
                     }
                 },
                 availableFilters = new
