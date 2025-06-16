@@ -3,14 +3,11 @@ using QuickDelivery.Core.Enums;
 
 namespace QuickDelivery.Core.DTOs.Users
 {
-    public class UpdateUserDto
+    public class RegisterUserDto
     {
+        [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email address")]
-        public string? Email { get; set; }
-
-        [MinLength(3, ErrorMessage = "Username must be at least 3 characters long")]
-        [MaxLength(100, ErrorMessage = "Username cannot exceed 100 characters")]
-        public string? Username { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [MaxLength(100, ErrorMessage = "First name cannot exceed 100 characters")]
         public string? FirstName { get; set; }
@@ -21,9 +18,13 @@ namespace QuickDelivery.Core.DTOs.Users
         [Phone(ErrorMessage = "Invalid phone number")]
         public string? PhoneNumber { get; set; }
 
-        public bool? IsActive { get; set; }
+        [Required(ErrorMessage = "Password is required")]
+        [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
+        public string Password { get; set; } = string.Empty;
 
-        public bool? IsEmailVerified { get; set; }
+        [Required(ErrorMessage = "Confirm password is required")]
+        [Compare("Password", ErrorMessage = "Passwords do not match")]
+        public string ConfirmPassword { get; set; } = string.Empty;
 
         public UserRole? Role { get; set; }
     }
