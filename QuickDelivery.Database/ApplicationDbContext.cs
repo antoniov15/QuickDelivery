@@ -165,6 +165,7 @@ namespace QuickDelivery.Database
         private static void SeedData(ModelBuilder modelBuilder)
         {
             var staticDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var staticRecentLogin = new DateTime(2024, 6, 15, 10, 30, 0, DateTimeKind.Utc); // FIXED: Static value instead of DateTime.UtcNow.AddDays(-1)
             var staticPasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO";
 
             // 1. USERS
@@ -324,7 +325,7 @@ namespace QuickDelivery.Database
                     IsActive = true,
                     IsEmailVerified = true,
                     CreatedAt = staticDate,
-                    LastLoginAt = DateTime.UtcNow.AddDays(-1) // Recent login
+                    LastLoginAt = staticRecentLogin // FIXED: Now using static value
                 }
             );
 
