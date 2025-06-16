@@ -202,7 +202,133 @@ namespace QuickDelivery.Infrastructure.Services
             );
         }
 
-        // OLD methods for backwards compatibility in continuare
+        // NEW UPDATE METHODS - URGENT IMPLEMENTATION
+
+        /// <summary>
+        /// Updates a product completely (PUT operation)
+        /// </summary>
+        public async Task<ProductWithCategoriesDto?> UpdateProductAsync(int productId, UpdateProductDto updateProductDto)
+        {
+            var product = await _context.Products
+                .Include(p => p.Categories)
+                .Include(p => p.Partner)
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            // Update all properties (PUT behavior - complete replacement)
+            if (updateProductDto.Name != null)
+                product.Name = updateProductDto.Name;
+
+            if (updateProductDto.Description != null)
+                product.Description = updateProductDto.Description;
+
+            if (updateProductDto.Price.HasValue)
+                product.Price = updateProductDto.Price.Value;
+
+            if (updateProductDto.ImageUrl != null)
+                product.ImageUrl = updateProductDto.ImageUrl;
+
+            if (updateProductDto.Category != null)
+                product.Category = updateProductDto.Category;
+
+            if (updateProductDto.IsAvailable.HasValue)
+                product.IsAvailable = updateProductDto.IsAvailable.Value;
+
+            if (updateProductDto.StockQuantity.HasValue)
+                product.StockQuantity = updateProductDto.StockQuantity.Value;
+
+            // Update timestamp
+            product.UpdatedAt = DateTime.UtcNow;
+
+            // Update categories (many-to-many relationship)
+            if (updateProductDto.CategoryIds != null)
+            {
+                await UpdateProductCategoriesAsync(product, updateProductDto.CategoryIds);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Return updated product with categories
+            return MapToProductWithCategoriesDto(product);
+        }
+
+        /// <summary>
+        /// Updates a product partially (PATCH operation)
+        /// </summary>
+        public async Task<ProductWithCategoriesDto?> PartialUpdateProductAsync(int productId, UpdateProductDto updateProductDto)
+        {
+            var product = await _context.Products
+                .Include(p => p.Categories)
+                .Include(p => p.Partner)
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
+
+            if (product == null)
+            {
+                return null;
+            }
+
+            // Update only provided properties (PATCH behavior - partial update)
+            if (!string.IsNullOrWhiteSpace(updateProductDto.Name))
+                product.Name = updateProductDto.Name;
+
+            if (updateProductDto.Description != null)
+                product.Description = updateProductDto.Description;
+
+            if (updateProductDto.Price.HasValue)
+                product.Price = updateProductDto.Price.Value;
+
+            if (updateProductDto.ImageUrl != null)
+                product.ImageUrl = updateProductDto.ImageUrl;
+
+            if (!string.IsNullOrWhiteSpace(updateProductDto.Category))
+                product.Category = updateProductDto.Category;
+
+            if (updateProductDto.IsAvailable.HasValue)
+                product.IsAvailable = updateProductDto.IsAvailable.Value;
+
+            if (updateProductDto.StockQuantity.HasValue)
+                product.StockQuantity = updateProductDto.StockQuantity.Value;
+
+            // Update timestamp
+            product.UpdatedAt = DateTime.UtcNow;
+
+            // Update categories only if provided (many-to-many relationship)
+            if (updateProductDto.CategoryIds != null && updateProductDto.CategoryIds.Any())
+            {
+                await UpdateProductCategoriesAsync(product, updateProductDto.CategoryIds);
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Return updated product with categories
+            return MapToProductWithCategoriesDto(product);
+        }
+
+        /// <summary>
+        /// Helper method to update product categories (many-to-many relationship)
+        /// </summary>
+        private async Task UpdateProductCategoriesAsync(Product product, List<int> categoryIds)
+        {
+            // Remove existing categories
+            product.Categories.Clear();
+
+            // Add new categories
+            if (categoryIds.Any())
+            {
+                var categories = await _context.Categories
+                    .Where(c => categoryIds.Contains(c.CategoryId))
+                    .ToListAsync();
+
+                foreach (var category in categories)
+                {
+                    product.Categories.Add(category);
+                }
+            }
+        }
 
         /// <summary>
         /// Private method for mapping entities to DTOs (data processing as required by assignment)

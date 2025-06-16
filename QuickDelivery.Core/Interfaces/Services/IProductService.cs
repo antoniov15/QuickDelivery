@@ -16,5 +16,8 @@ namespace QuickDelivery.Core.Interfaces.Services
 
         // advanced filtering, pagination and sorting
         Task<PaginatedResult<ProductWithCategoriesDto>> GetProductsWithCategoriesAsync(ProductQueryParameters parameters);
+
+        Task<ProductWithCategoriesDto?> UpdateProductAsync(int productId, UpdateProductDto updateProductDto);
+        Task<ProductWithCategoriesDto?> PartialUpdateProductAsync(int productId, UpdateProductDto updateProductDto);
     }
 }
