@@ -42,7 +42,7 @@ namespace QuickDelivery.Core.Entities
 
         public DateTime? LastLocationUpdate { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
 
         // Foreign Key relationships
         [ForeignKey("OrderId")]

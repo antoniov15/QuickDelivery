@@ -1,10 +1,7 @@
-using QuickDelivery.Core.Interfaces;
 using QuickDelivery.Core.Interfaces.Repositories;
 using QuickDelivery.Core.Interfaces.Services;
-using QuickDelivery.Infrastructure;
 using QuickDelivery.Infrastructure.Repositories;
 using QuickDelivery.Infrastructure.Services;
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using QuickDelivery.Database;
+using QuickDelivery.Database.Extensions;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
 
@@ -141,7 +139,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuickDelivery API v1");
-        c.RoutePrefix = string.Empty; // Makes Swagger UI available at root
+        c.RoutePrefix = string.Empty; // Swagger UI available at root
     });
 }
 
@@ -149,13 +147,20 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
     try
     {
-        context.Database.Migrate();
+        // apply migrations
+        await context.Database.MigrateAsync();
+        logger.LogInformation("Database migration completed successfully.");
+
+        // Seed many-to-many relationships
+        await context.SeedManyToManyRelationshipsAsync(logger);
+        logger.LogInformation("Data seeding completed successfully.");
     }
     catch (Exception ex)
     {
-        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred while migrating the database.");
     }
 }

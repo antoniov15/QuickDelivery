@@ -19,6 +19,7 @@ namespace QuickDelivery.Database
         public DbSet<Product> Products { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -127,19 +128,22 @@ namespace QuickDelivery.Database
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            // Seed data
+            // MANY-TO-MANY CONFIGURATION BETWEEN PRODUCT AND CATEGORY
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.Categories)
+                .WithMany(c => c.Products)
+                .UsingEntity(j => j.ToTable("ProductCategories"));
+
+            // Call seed data method
             SeedData(modelBuilder);
         }
 
         private static void SeedData(ModelBuilder modelBuilder)
         {
-            // Date statice pentru a evita eroarea de model dinamic
             var staticDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-            // Hash static pre-generat pentru parola "admin123"
             var staticPasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO";
 
-            // Seed default admin user
+            // 1. USERS
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -148,15 +152,28 @@ namespace QuickDelivery.Database
                     LastName = "QuickDelivery",
                     Email = "admin@quickdelivery.com",
                     PhoneNumber = "+40123456789",
-                    PasswordHash = staticPasswordHash, // Hash static in loc de BCrypt.HashPassword
+                    PasswordHash = staticPasswordHash,
                     Role = UserRole.Admin,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+                new User
+                {
+                    UserId = 2,
+                    FirstName = "Restaurant",
+                    LastName = "Owner",
+                    Email = "partner@restaurant.com",
+                    PhoneNumber = "+40123456790",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Partner,
                     IsActive = true,
                     IsEmailVerified = true,
                     CreatedAt = staticDate
                 }
             );
 
-            // Seed default address for admin
+            // 2. ADDRESSES
             modelBuilder.Entity<Address>().HasData(
                 new Address
                 {
@@ -167,6 +184,123 @@ namespace QuickDelivery.Database
                     PostalCode = "100001",
                     Country = "Romania",
                     IsDefault = true,
+                    CreatedAt = staticDate
+                },
+                new Address
+                {
+                    AddressId = 2,
+                    UserId = 2,
+                    Street = "Strada Restaurantului 5",
+                    City = "Bucuresti",
+                    PostalCode = "100002",
+                    Country = "Romania",
+                    IsDefault = true,
+                    CreatedAt = staticDate
+                }
+            );
+
+            // 3. PARTNERS
+            modelBuilder.Entity<Partner>().HasData(
+                new Partner
+                {
+                    PartnerId = 1,
+                    UserId = 2,
+                    BusinessName = "Delicious Restaurant",
+                    Description = "Best food in town",
+                    AddressId = 2,
+                    OpenTime = new TimeSpan(8, 0, 0),
+                    CloseTime = new TimeSpan(22, 0, 0),
+                    AverageRating = 4.5m,
+                    TotalOrders = 0,
+                    IsActive = true,
+                    CreatedAt = staticDate
+                }
+            );
+
+            // 4. CATEGORIES - ONLY HERE, NO DUPLICATES
+            modelBuilder.Entity<Category>().HasData(
+                new Category
+                {
+                    CategoryId = 1,
+                    Name = "Fast Food",
+                    Description = "Quick meals and snacks",
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+                new Category
+                {
+                    CategoryId = 2,
+                    Name = "Pizza",
+                    Description = "Various pizza types",
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+                new Category
+                {
+                    CategoryId = 3,
+                    Name = "Asian Food",
+                    Description = "Asian cuisine",
+                    IsActive = true,
+                    CreatedAt = staticDate
+                },
+                new Category
+                {
+                    CategoryId = 4,
+                    Name = "Desserts",
+                    Description = "Sweet treats",
+                    IsActive = true,
+                    CreatedAt = staticDate
+                }
+            );
+
+            // 5. PRODUCTS
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    ProductId = 1,
+                    PartnerId = 1,
+                    Name = "Margherita Pizza",
+                    Description = "Classic pizza with tomato sauce, mozzarella and basil",
+                    Price = 25.50m,
+                    Category = "Pizza",
+                    IsAvailable = true,
+                    StockQuantity = 50,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 2,
+                    PartnerId = 1,
+                    Name = "Cheeseburger",
+                    Description = "Juicy beef burger with cheese",
+                    Price = 18.00m,
+                    Category = "Fast Food",
+                    IsAvailable = true,
+                    StockQuantity = 30,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 3,
+                    PartnerId = 1,
+                    Name = "Chicken Pad Thai",
+                    Description = "Traditional Thai noodles with chicken",
+                    Price = 22.00m,
+                    Category = "Asian Food",
+                    IsAvailable = true,
+                    StockQuantity = 25,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 4,
+                    PartnerId = 1,
+                    Name = "Chocolate Cake",
+                    Description = "Rich chocolate cake with cream",
+                    Price = 15.00m,
+                    Category = "Desserts",
+                    IsAvailable = true,
+                    StockQuantity = 20,
                     CreatedAt = staticDate
                 }
             );
