@@ -22,7 +22,7 @@ namespace QuickDelivery.Database.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CategoryProduct", b =>
+            modelBuilder.Entity("ProductCategories", b =>
                 {
                     b.Property<int>("CategoriesCategoryId")
                         .HasColumnType("int");
@@ -34,7 +34,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("ProductsProductId");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Address", b =>
@@ -88,7 +88,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
 
                     b.HasData(
                         new
@@ -112,6 +112,76 @@ namespace QuickDelivery.Database.Migrations
                             PostalCode = "100002",
                             Street = "Strada Restaurantului 5",
                             UserId = 2
+                        },
+                        new
+                        {
+                            AddressId = 3,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Instructions = "Apartament 4, et. 2",
+                            IsDefault = true,
+                            PostalCode = "100003",
+                            Street = "Bulevardul Unirii 15",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            AddressId = 4,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Instructions = "Birou, et. 3",
+                            IsDefault = false,
+                            PostalCode = "100004",
+                            Street = "Strada Victoriei 25",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            AddressId = 5,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Instructions = "Bloc A, scara 1, apt. 15",
+                            IsDefault = true,
+                            PostalCode = "100005",
+                            Street = "Calea Floreasca 100",
+                            UserId = 4
+                        },
+                        new
+                        {
+                            AddressId = 6,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDefault = true,
+                            PostalCode = "100006",
+                            Street = "Strada Aviatorilor 8",
+                            UserId = 5
+                        },
+                        new
+                        {
+                            AddressId = 7,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Instructions = "Vila, poarta alba",
+                            IsDefault = true,
+                            PostalCode = "100007",
+                            Street = "Bulevardul Herastrau 45",
+                            UserId = 10
+                        },
+                        new
+                        {
+                            AddressId = 8,
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            IsDefault = true,
+                            PostalCode = "100008",
+                            Street = "Strada Pizzeriei 12",
+                            UserId = 9
                         });
                 });
 
@@ -144,7 +214,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -178,6 +248,75 @@ namespace QuickDelivery.Database.Migrations
                             Description = "Sweet treats",
                             IsActive = true,
                             Name = "Desserts"
+                        });
+                });
+
+            modelBuilder.Entity("QuickDelivery.Core.Entities.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CustomerId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            Address = "Bulevardul Unirii 15",
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            Name = "John Doe",
+                            PostalCode = "100003",
+                            UserId = 3
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            Address = "Calea Floreasca 100",
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            Name = "Jane Smith",
+                            PostalCode = "100005",
+                            UserId = 4
+                        },
+                        new
+                        {
+                            CustomerId = 3,
+                            Address = "Bulevardul Herastrau 45",
+                            City = "Bucuresti",
+                            Country = "Romania",
+                            Name = "Maria Rodriguez",
+                            PostalCode = "100007",
+                            UserId = 10
                         });
                 });
 
@@ -237,7 +376,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Deliveries", (string)null);
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Order", b =>
@@ -316,7 +455,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("PickupAddressId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.OrderItem", b =>
@@ -352,7 +491,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Partner", b =>
@@ -411,7 +550,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Partners", (string)null);
+                    b.ToTable("Partners");
 
                     b.HasData(
                         new
@@ -427,6 +566,22 @@ namespace QuickDelivery.Database.Migrations
                             OpenTime = new TimeSpan(0, 8, 0, 0, 0),
                             TotalOrders = 0,
                             UserId = 2
+                        },
+                        new
+                        {
+                            PartnerId = 2,
+                            AddressId = 8,
+                            AverageRating = 4.8m,
+                            BusinessName = "Mario's Pizza Palace",
+                            CloseTime = new TimeSpan(0, 23, 0, 0, 0),
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Authentic Italian pizza made with love",
+                            IsActive = true,
+                            LogoUrl = "https://example.com/mario-logo.png",
+                            OpenTime = new TimeSpan(0, 10, 0, 0, 0),
+                            TotalOrders = 0,
+                            UserId = 9,
+                            Website = "https://mariospizza.com"
                         });
                 });
 
@@ -473,7 +628,7 @@ namespace QuickDelivery.Database.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("QuickDelivery.Core.Entities.Product", b =>
@@ -523,7 +678,7 @@ namespace QuickDelivery.Database.Migrations
 
                     b.HasIndex("PartnerId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -573,6 +728,54 @@ namespace QuickDelivery.Database.Migrations
                             PartnerId = 1,
                             Price = 15.00m,
                             StockQuantity = 20
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            Category = "Pizza",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Classic pepperoni pizza with mozzarella",
+                            IsAvailable = true,
+                            Name = "Pepperoni Pizza",
+                            PartnerId = 2,
+                            Price = 28.00m,
+                            StockQuantity = 40
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            Category = "Pizza",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Four seasons pizza with ham, mushrooms, olives and artichokes",
+                            IsAvailable = true,
+                            Name = "Quattro Stagioni",
+                            PartnerId = 2,
+                            Price = 32.00m,
+                            StockQuantity = 35
+                        },
+                        new
+                        {
+                            ProductId = 7,
+                            Category = "Desserts",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Traditional Italian dessert with coffee and mascarpone",
+                            IsAvailable = true,
+                            Name = "Tiramisu",
+                            PartnerId = 2,
+                            Price = 18.00m,
+                            StockQuantity = 15
+                        },
+                        new
+                        {
+                            ProductId = 8,
+                            Category = "Fast Food",
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Crispy bread with garlic butter and herbs",
+                            IsAvailable = true,
+                            Name = "Garlic Bread",
+                            PartnerId = 2,
+                            Price = 12.00m,
+                            StockQuantity = 60
                         });
                 });
 
@@ -593,7 +796,6 @@ namespace QuickDelivery.Database.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -607,7 +809,6 @@ namespace QuickDelivery.Database.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -616,7 +817,6 @@ namespace QuickDelivery.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -629,12 +829,20 @@ namespace QuickDelivery.Database.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.HasKey("UserId");
 
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users", (string)null);
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -648,7 +856,8 @@ namespace QuickDelivery.Database.Migrations
                             LastName = "QuickDelivery",
                             PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
                             PhoneNumber = "+40123456789",
-                            Role = 4
+                            Role = 4,
+                            Username = "admin"
                         },
                         new
                         {
@@ -661,11 +870,125 @@ namespace QuickDelivery.Database.Migrations
                             LastName = "Owner",
                             PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
                             PhoneNumber = "+40123456790",
-                            Role = 3
+                            Role = 3,
+                            Username = "restaurant_owner"
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "john.doe@email.com",
+                            FirstName = "John",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastName = "Doe",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456791",
+                            Role = 1,
+                            Username = "john_doe"
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "jane.smith@email.com",
+                            FirstName = "Jane",
+                            IsActive = true,
+                            IsEmailVerified = false,
+                            LastName = "Smith",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456792",
+                            Role = 1,
+                            Username = "jane_smith"
+                        },
+                        new
+                        {
+                            UserId = 5,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "mike.deliverer@email.com",
+                            FirstName = "Mike",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastName = "Johnson",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456793",
+                            Role = 2,
+                            Username = "mike_deliverer"
+                        },
+                        new
+                        {
+                            UserId = 6,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "sarah.deliverer@email.com",
+                            FirstName = "Sarah",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastName = "Wilson",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456794",
+                            Role = 2,
+                            Username = "sarah_deliverer"
+                        },
+                        new
+                        {
+                            UserId = 7,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "manager@quickdelivery.com",
+                            FirstName = "David",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastName = "Manager",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456795",
+                            Role = 5,
+                            Username = "david_manager"
+                        },
+                        new
+                        {
+                            UserId = 8,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "inactive@email.com",
+                            FirstName = "Inactive",
+                            IsActive = false,
+                            IsEmailVerified = true,
+                            LastName = "User",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456796",
+                            Role = 1,
+                            Username = "inactive_user"
+                        },
+                        new
+                        {
+                            UserId = 9,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "pizza.owner@restaurant.com",
+                            FirstName = "Pizza",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastName = "Owner",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456797",
+                            Role = 3,
+                            Username = "pizza_owner"
+                        },
+                        new
+                        {
+                            UserId = 10,
+                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "maria.vip@email.com",
+                            FirstName = "Maria",
+                            IsActive = true,
+                            IsEmailVerified = true,
+                            LastLoginAt = new DateTime(2025, 6, 15, 22, 6, 23, 447, DateTimeKind.Utc).AddTicks(3219),
+                            LastName = "Rodriguez",
+                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
+                            PhoneNumber = "+40123456798",
+                            Role = 1,
+                            Username = "maria_vip"
                         });
                 });
 
-            modelBuilder.Entity("CategoryProduct", b =>
+            modelBuilder.Entity("ProductCategories", b =>
                 {
                     b.HasOne("QuickDelivery.Core.Entities.Category", null)
                         .WithMany()
@@ -685,6 +1008,16 @@ namespace QuickDelivery.Database.Migrations
                     b.HasOne("QuickDelivery.Core.Entities.User", "User")
                         .WithMany("Addresses")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("QuickDelivery.Core.Entities.Customer", b =>
+                {
+                    b.HasOne("QuickDelivery.Core.Entities.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("QuickDelivery.Core.Entities.Customer", "UserId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("User");
@@ -825,6 +1158,8 @@ namespace QuickDelivery.Database.Migrations
             modelBuilder.Entity("QuickDelivery.Core.Entities.User", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("DeliveriesAsDeliverer");
 

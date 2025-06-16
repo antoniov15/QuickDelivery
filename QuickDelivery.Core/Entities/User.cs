@@ -17,7 +17,7 @@ namespace QuickDelivery.Core.Entities
 
         [Required]
         [StringLength(100)]
-        public string Username { get; set; } = string.Empty; // <- ADĂUGAT
+        public string Username { get; set; } = string.Empty;
 
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
@@ -50,11 +50,10 @@ namespace QuickDelivery.Core.Entities
         public DateTime? LastLoginAt { get; set; }
 
         // Navigation properties
-        public int? CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }
-
         public virtual Partner? Partner { get; set; }
 
+        // Computed properties pentru ID-urile relațiilor
         [NotMapped]
         public int? CustomerId => Customer?.CustomerId;
 

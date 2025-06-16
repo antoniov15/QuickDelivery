@@ -328,6 +328,40 @@ namespace QuickDelivery.Database
                 }
             );
 
+            // seeding pentru Customer entity
+            modelBuilder.Entity<Customer>().HasData(
+                new Customer
+                {
+                    CustomerId = 1,
+                    UserId = 3, // John Doe
+                    Name = "John Doe",
+                    Address = "Bulevardul Unirii 15",
+                    City = "Bucuresti",
+                    PostalCode = "100003",
+                    Country = "Romania"
+                },
+                new Customer
+                {
+                    CustomerId = 2,
+                    UserId = 4, // Jane Smith
+                    Name = "Jane Smith",
+                    Address = "Calea Floreasca 100",
+                    City = "Bucuresti",
+                    PostalCode = "100005",
+                    Country = "Romania"
+                },
+                new Customer
+                {
+                    CustomerId = 3,
+                    UserId = 10, // Maria VIP
+                    Name = "Maria Rodriguez",
+                    Address = "Bulevardul Herastrau 45",
+                    City = "Bucuresti",
+                    PostalCode = "100007",
+                    Country = "Romania"
+                }
+            );
+
             // 2. ADDRESSES
             modelBuilder.Entity<Address>().HasData(
                 // Admin address

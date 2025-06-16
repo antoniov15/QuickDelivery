@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using QuickDelivery.Api.Middleware;
+using QuickDelivery.Api.Middleware; // IMPORTANT: Import pentru middleware
 using QuickDelivery.Core.Interfaces.Repositories;
 using QuickDelivery.Core.Interfaces.Services;
 using QuickDelivery.Core.Options;
@@ -180,9 +180,11 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
-//app.UseExceptionHandlingMiddleware();
-//app.UseExceptionHandlingMiddleware();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+// Exception handling middleware - FIXED
+//app.UseExceptionHandlingMiddleware(); // Folosește extension method-ul
+
+// Sau alternativ:
+// app.UseMiddleware<ExceptionHandlingMiddleware>(); // Folosește direct middleware-ul
 
 app.UseCors("AllowAll");
 
