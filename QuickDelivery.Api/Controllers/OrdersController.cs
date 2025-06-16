@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuickDelivery.Core.DTOs;
 using QuickDelivery.Core.DTOs.Common;
@@ -7,6 +8,7 @@ using QuickDelivery.Core.Interfaces.Services;
 
 namespace QuickDelivery.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
@@ -86,6 +88,7 @@ namespace QuickDelivery.Api.Controllers
         /// </summary>
         /// <param name="customerId">Customer ID</param>
         /// <returns>Orders for the customer</returns>
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet("customer/{customerId}")]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<OrderDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
@@ -216,6 +219,7 @@ namespace QuickDelivery.Api.Controllers
         /// <param name="id">Order ID</param>
         /// <param name="updateOrderDto">Updated data</param>
         /// <returns>Updated order</returns>
+        [Authorize(Roles = "Admin,Manager")]
         [HttpPatch("{id}/status")]
         [ProducesResponseType(typeof(ApiResponse<OrderDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
@@ -263,6 +267,7 @@ namespace QuickDelivery.Api.Controllers
         /// </summary>
         /// <param name="id">Order ID</param>
         /// <returns>Operation status</returns>
+        [Authorize(Roles = "Admin,Manager")]
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(ApiResponse<object>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 404)]
