@@ -14,6 +14,7 @@ using QuickDelivery.Database;
 using QuickDelivery.Database.Extensions;
 using System.Text;
 using Microsoft.AspNetCore.Builder;
+using QuickDelivery.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,7 +80,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "QuickDelivery API",
         Version = "v1",
-        Description = "API for QuickDelivery - Urban Delivery Platform",
+        Description = "API for QuickDelivery - Urban Delivery Platform with Exception Handling",
         Contact = new OpenApiContact
         {
             Name = "QuickDelivery Team",
@@ -166,6 +167,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+
+app.UseExceptionHandlingMiddleware();
 
 app.UseCors("AllowAll");
 
