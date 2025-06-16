@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuickDelivery.Database.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreateWithCategories : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,15 +36,16 @@ namespace QuickDelivery.Database.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<int>(type: "int", nullable: false),
-                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsEmailVerified = table.Column<bool>(type: "bit", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    ProfileImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastLoginAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -76,6 +77,30 @@ namespace QuickDelivery.Database.Migrations
                     table.PrimaryKey("PK_Addresses", x => x.AddressId);
                     table.ForeignKey(
                         name: "FK_Addresses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_Customers_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -330,11 +355,19 @@ namespace QuickDelivery.Database.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "CreatedAt", "Email", "FirstName", "IsActive", "IsEmailVerified", "LastLoginAt", "LastName", "PasswordHash", "PhoneNumber", "ProfileImageUrl", "Role", "UpdatedAt" },
+                columns: new[] { "UserId", "CreatedAt", "Email", "FirstName", "IsActive", "IsEmailVerified", "LastLoginAt", "LastName", "PasswordHash", "PhoneNumber", "ProfileImageUrl", "Role", "UpdatedAt", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "admin@quickdelivery.com", "Admin", true, true, null, "QuickDelivery", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456789", null, 4, null },
-                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "partner@restaurant.com", "Restaurant", true, true, null, "Owner", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456790", null, 3, null }
+                    { 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "admin@quickdelivery.com", "Admin", true, true, null, "QuickDelivery", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456789", null, 4, null, "admin" },
+                    { 2, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "partner@restaurant.com", "Restaurant", true, true, null, "Owner", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456790", null, 3, null, "restaurant_owner" },
+                    { 3, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "john.doe@email.com", "John", true, true, null, "Doe", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456791", null, 1, null, "john_doe" },
+                    { 4, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "jane.smith@email.com", "Jane", true, false, null, "Smith", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456792", null, 1, null, "jane_smith" },
+                    { 5, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "mike.deliverer@email.com", "Mike", true, true, null, "Johnson", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456793", null, 2, null, "mike_deliverer" },
+                    { 6, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "sarah.deliverer@email.com", "Sarah", true, true, null, "Wilson", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456794", null, 2, null, "sarah_deliverer" },
+                    { 7, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "manager@quickdelivery.com", "David", true, true, null, "Manager", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456795", null, 5, null, "david_manager" },
+                    { 8, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "inactive@email.com", "Inactive", false, true, null, "User", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456796", null, 1, null, "inactive_user" },
+                    { 9, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "pizza.owner@restaurant.com", "Pizza", true, true, null, "Owner", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456797", null, 3, null, "pizza_owner" },
+                    { 10, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "maria.vip@email.com", "Maria", true, true, new DateTime(2025, 6, 15, 22, 6, 23, 447, DateTimeKind.Utc).AddTicks(3219), "Rodriguez", "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO", "+40123456798", null, 1, null, "maria_vip" }
                 });
 
             migrationBuilder.InsertData(
@@ -343,13 +376,33 @@ namespace QuickDelivery.Database.Migrations
                 values: new object[,]
                 {
                     { 1, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100001", "Strada Principala 1", 1 },
-                    { 2, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100002", "Strada Restaurantului 5", 2 }
+                    { 2, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100002", "Strada Restaurantului 5", 2 },
+                    { 3, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Apartament 4, et. 2", true, null, null, "100003", "Bulevardul Unirii 15", 3 },
+                    { 4, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Birou, et. 3", false, null, null, "100004", "Strada Victoriei 25", 3 },
+                    { 5, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Bloc A, scara 1, apt. 15", true, null, null, "100005", "Calea Floreasca 100", 4 },
+                    { 6, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100006", "Strada Aviatorilor 8", 5 },
+                    { 7, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Vila, poarta alba", true, null, null, "100007", "Bulevardul Herastrau 45", 10 },
+                    { 8, "Bucuresti", "Romania", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, true, null, null, "100008", "Strada Pizzeriei 12", 9 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "CustomerId", "Address", "City", "Country", "Name", "PostalCode", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "Bulevardul Unirii 15", "Bucuresti", "Romania", "John Doe", "100003", 3 },
+                    { 2, "Calea Floreasca 100", "Bucuresti", "Romania", "Jane Smith", "100005", 4 },
+                    { 3, "Bulevardul Herastrau 45", "Bucuresti", "Romania", "Maria Rodriguez", "100007", 10 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Partners",
                 columns: new[] { "PartnerId", "AddressId", "AverageRating", "BusinessName", "CloseTime", "CreatedAt", "Description", "IsActive", "LogoUrl", "OpenTime", "TotalOrders", "UserId", "Website" },
-                values: new object[] { 1, 2, 4.5m, "Delicious Restaurant", new TimeSpan(0, 22, 0, 0, 0), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Best food in town", true, null, new TimeSpan(0, 8, 0, 0, 0), 0, 2, null });
+                values: new object[,]
+                {
+                    { 1, 2, 4.5m, "Delicious Restaurant", new TimeSpan(0, 22, 0, 0, 0), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Best food in town", true, null, new TimeSpan(0, 8, 0, 0, 0), 0, 2, null },
+                    { 2, 8, 4.8m, "Mario's Pizza Palace", new TimeSpan(0, 23, 0, 0, 0), new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Authentic Italian pizza made with love", true, "https://example.com/mario-logo.png", new TimeSpan(0, 10, 0, 0, 0), 0, 9, "https://mariospizza.com" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Products",
@@ -359,13 +412,24 @@ namespace QuickDelivery.Database.Migrations
                     { 1, "Pizza", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Classic pizza with tomato sauce, mozzarella and basil", null, true, "Margherita Pizza", 1, 25.50m, 50, null },
                     { 2, "Fast Food", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Juicy beef burger with cheese", null, true, "Cheeseburger", 1, 18.00m, 30, null },
                     { 3, "Asian Food", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Traditional Thai noodles with chicken", null, true, "Chicken Pad Thai", 1, 22.00m, 25, null },
-                    { 4, "Desserts", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Rich chocolate cake with cream", null, true, "Chocolate Cake", 1, 15.00m, 20, null }
+                    { 4, "Desserts", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Rich chocolate cake with cream", null, true, "Chocolate Cake", 1, 15.00m, 20, null },
+                    { 5, "Pizza", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Classic pepperoni pizza with mozzarella", null, true, "Pepperoni Pizza", 2, 28.00m, 40, null },
+                    { 6, "Pizza", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Four seasons pizza with ham, mushrooms, olives and artichokes", null, true, "Quattro Stagioni", 2, 32.00m, 35, null },
+                    { 7, "Desserts", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Traditional Italian dessert with coffee and mascarpone", null, true, "Tiramisu", 2, 18.00m, 15, null },
+                    { 8, "Fast Food", new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), "Crispy bread with garlic butter and herbs", null, true, "Garlic Bread", 2, 12.00m, 60, null }
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_UserId",
                 table: "Addresses",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Customers_UserId",
+                table: "Customers",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Deliveries_DelivererId",
@@ -446,11 +510,20 @@ namespace QuickDelivery.Database.Migrations
                 table: "Users",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Customers");
+
             migrationBuilder.DropTable(
                 name: "Deliveries");
 

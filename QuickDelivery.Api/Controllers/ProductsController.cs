@@ -5,6 +5,10 @@ using QuickDelivery.Core.DTOs.Products;
 using QuickDelivery.Core.Interfaces.Services;
 using Microsoft.Extensions.Logging;
 
+// ALIAS pentru a evita conflictele
+using PaginatedResultDto = QuickDelivery.Core.DTOs.Common.PaginatedResult<QuickDelivery.Core.DTOs.ProductWithCategoriesDto>;
+
+
 namespace QuickDelivery.Api.Controllers
 {
     [Route("api/[controller]")]
@@ -29,10 +33,10 @@ namespace QuickDelivery.Api.Controllers
         /// <param name="parameters">Query parameters for filtering, sorting, and pagination</param>
         /// <returns>Paginated list of products with categories</returns>
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<PaginatedResult<ProductWithCategoriesDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResponse<PaginatedResultDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
-        public async Task<ActionResult<ApiResponse<PaginatedResult<ProductWithCategoriesDto>>>> GetProducts([FromQuery] ProductQueryParameters parameters)
+        public async Task<ActionResult<ApiResponse<QuickDelivery.Core.DTOs.Common.PaginatedResult<ProductWithCategoriesDto>>>> GetProducts([FromQuery] ProductQueryParameters parameters)
         {
             try
             {
@@ -53,7 +57,7 @@ namespace QuickDelivery.Api.Controllers
                 _logger.LogInformation("Retrieved {Count} products out of {Total} with pagination (page {Page}, size {PageSize})",
                     result.Data.Count(), result.TotalCount, result.Page, result.PageSize);
 
-                return Ok(ApiResponse<PaginatedResult<ProductWithCategoriesDto>>.SuccessResult(
+                return Ok(ApiResponse<PaginatedResultDto>.SuccessResult(
                     result,
                     $"Products retrieved successfully. Page {result.Page} of {result.TotalPages}, showing {result.Data.Count()} of {result.TotalCount} total products."
                 ));

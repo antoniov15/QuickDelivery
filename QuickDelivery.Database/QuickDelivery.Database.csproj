@@ -23,4 +23,8 @@
     <ProjectReference Include="..\QuickDelivery.Core\QuickDelivery.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

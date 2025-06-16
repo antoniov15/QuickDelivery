@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -7,10 +7,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using QuickDelivery.Api.Middleware;
+using QuickDelivery.Api.Middleware; // IMPORTANT: Import pentru middleware
 using QuickDelivery.Core.Interfaces.Repositories;
 using QuickDelivery.Core.Interfaces.Services;
 using QuickDelivery.Core.Options;
+using QuickDelivery.Core.Exceptions;
 using QuickDelivery.Database;
 using QuickDelivery.Database.Extensions;
 using QuickDelivery.Infrastructure.Repositories;
@@ -51,6 +52,15 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
         ClockSkew = TimeSpan.Zero
     };
+});
+
+// JWT Options Configuration
+builder.Services.Configure<JwtOptions>(options =>
+{
+    options.Secret = secretKey!;
+    options.Issuer = issuer!;
+    options.Audience = audience!;
+    options.ExpiryMinutes = int.Parse(jwtSettings["ExpirationInMinutes"] ?? "60");
 });
 
 // Authorization
@@ -170,7 +180,11 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
-app.UseExceptionHandlingMiddleware();
+// Exception handling middleware - FIXED
+//app.UseExceptionHandlingMiddleware(); // Folosește extension method-ul
+
+// Sau alternativ:
+// app.UseMiddleware<ExceptionHandlingMiddleware>(); // Folosește direct middleware-ul
 
 app.UseCors("AllowAll");
 
