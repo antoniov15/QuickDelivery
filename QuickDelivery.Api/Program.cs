@@ -53,6 +53,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// JWT Options Configuration
+builder.Services.Configure<JwtOptions>(options =>
+{
+    options.Secret = secretKey!;
+    options.Issuer = issuer!;
+    options.Audience = audience!;
+    options.ExpiryMinutes = int.Parse(jwtSettings["ExpirationInMinutes"] ?? "60");
+});
+
 // Authorization
 builder.Services.AddAuthorization(options =>
 {

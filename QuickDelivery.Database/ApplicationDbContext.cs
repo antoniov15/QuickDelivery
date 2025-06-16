@@ -20,6 +20,7 @@ namespace QuickDelivery.Database
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,7 +30,9 @@ namespace QuickDelivery.Database
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasIndex(e => e.Email).IsUnique();
+                entity.HasIndex(e => e.Username).IsUnique();
                 entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Username).IsRequired();
                 entity.Property(e => e.PasswordHash).IsRequired();
             });
 
@@ -159,6 +162,7 @@ namespace QuickDelivery.Database
                     UserId = 1,
                     FirstName = "Admin",
                     LastName = "QuickDelivery",
+                    Username = "admin",
                     Email = "admin@quickdelivery.com",
                     PhoneNumber = "+40123456789",
                     PasswordHash = staticPasswordHash,
@@ -172,6 +176,7 @@ namespace QuickDelivery.Database
                     UserId = 2,
                     FirstName = "Restaurant",
                     LastName = "Owner",
+                    Username = "restaurant_owner",
                     Email = "partner@restaurant.com",
                     PhoneNumber = "+40123456790",
                     PasswordHash = staticPasswordHash,

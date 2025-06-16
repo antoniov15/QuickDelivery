@@ -1,33 +1,38 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Generic;
 using QuickDelivery.Core.Enums;
 
 namespace QuickDelivery.Core.Entities
 {
+    [Table("Users")]
     public class User
     {
+        [Key]
         public int UserId { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(255)]
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(100)]
-        public string Username { get; set; } = string.Empty;
+        [StringLength(100)]
+        public string Username { get; set; } = string.Empty; // <- ADĂUGAT
 
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
 
-        [MaxLength(100)]
+        [StringLength(100)]
         public string? FirstName { get; set; }
 
-        [MaxLength(100)]
+        [StringLength(100)]
         public string? LastName { get; set; }
 
         // Proprietate calculată pentru numele complet
+        [NotMapped]
         public string FullName => $"{FirstName} {LastName}".Trim();
 
+        [StringLength(15)]
         public string? PhoneNumber { get; set; }
 
         public bool IsActive { get; set; } = true;
@@ -42,14 +47,12 @@ namespace QuickDelivery.Core.Entities
 
         public DateTime? UpdatedAt { get; set; }
 
-        // Redenumim LastLogin la LastLoginAt pentru consistență
         public DateTime? LastLoginAt { get; set; }
 
         // Navigation properties
         public int? CustomerId { get; set; }
         public virtual Customer? Customer { get; set; }
 
-        public int? PartnerId { get; set; }
         public virtual Partner? Partner { get; set; }
 
         public virtual ICollection<Order> OrdersAsCustomer { get; set; } = new List<Order>();
