@@ -144,7 +144,19 @@ namespace QuickDelivery.Database
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.Categories)
                 .WithMany(c => c.Products)
-                .UsingEntity(j => j.ToTable("ProductCategories"));
+                .UsingEntity<Dictionary<string, object>>(
+                    "ProductCategories", // Numele tabelului junction
+                    j => j
+                        .HasOne<Category>()
+                        .WithMany()
+                        .HasForeignKey("CategoriesCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j
+                        .HasOne<Product>()
+                        .WithMany()
+                        .HasForeignKey("ProductsProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                );
 
             // Call seed data method
             SeedData(modelBuilder);

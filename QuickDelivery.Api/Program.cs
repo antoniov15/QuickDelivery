@@ -11,10 +11,12 @@ using QuickDelivery.Api.Middleware;
 using QuickDelivery.Core.Interfaces.Repositories;
 using QuickDelivery.Core.Interfaces.Services;
 using QuickDelivery.Core.Options;
+using QuickDelivery.Core.Exceptions;
 using QuickDelivery.Database;
 using QuickDelivery.Database.Extensions;
 using QuickDelivery.Infrastructure.Repositories;
 using QuickDelivery.Infrastructure.Services;
+using QuickDelivery_DAWM.Middleware;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -179,7 +181,9 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 
-app.UseExceptionHandlingMiddleware();
+//app.UseExceptionHandlingMiddleware();
+//app.UseExceptionHandlingMiddleware();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseCors("AllowAll");
 

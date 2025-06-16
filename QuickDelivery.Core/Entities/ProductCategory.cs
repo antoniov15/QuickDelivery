@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace QuickDelivery.Core.Entities
 {
-    internal class ProductCategory
+    public class ProductCategory
     {
+        public int ProductId { get; set; }
+        public virtual Product Product { get; set; } = null!;
+
+        public int CategoryId { get; set; }
+        public virtual Category Category { get; set; } = null!;
     }
 }

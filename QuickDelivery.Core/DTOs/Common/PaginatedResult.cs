@@ -10,6 +10,8 @@
         public bool HasNextPage { get; set; }
         public bool HasPreviousPage { get; set; }
 
+        public PaginatedResult() { }
+
         public PaginatedResult(IEnumerable<T> data, int totalCount, int page, int pageSize)
         {
             Data = data;

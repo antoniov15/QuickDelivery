@@ -205,13 +205,17 @@ namespace QuickDelivery.Infrastructure.Services
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                FullName = user.FullName,
                 PhoneNumber = user.PhoneNumber,
                 IsActive = user.IsActive,
+                IsEmailVerified = user.IsEmailVerified,
                 Role = user.Role,
+                ProfileImageUrl = user.ProfileImageUrl,
                 CreatedAt = user.CreatedAt,
+                UpdatedAt = user.UpdatedAt,
                 LastLoginAt = user.LastLoginAt,
                 CustomerId = user.CustomerId,
-                PartnerId = user.PartnerId
+                PartnerId = user.Partner?.PartnerId
             };
         }
 
