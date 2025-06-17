@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using QuickDelivery.Core.DTOs;
 using QuickDelivery.Core.DTOs.Common;
 using QuickDelivery.Core.DTOs.Products;
 using QuickDelivery.Core.Interfaces.Services;
-using Microsoft.Extensions.Logging;
-
 // ALIAS pentru a evita conflictele
 using PaginatedResultDto = QuickDelivery.Core.DTOs.Common.PaginatedResult<QuickDelivery.Core.DTOs.ProductWithCategoriesDto>;
 
@@ -137,6 +137,7 @@ namespace QuickDelivery.Api.Controllers
         /// <param name="id">Product ID</param>
         /// <param name="updateProductDto">Product update data</param>
         /// <returns>Updated product with categories</returns>
+        [Authorize(Roles = "Admin,Partner")]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiResponse<ProductWithCategoriesDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
@@ -187,6 +188,8 @@ namespace QuickDelivery.Api.Controllers
         /// <param name="id">Product ID</param>
         /// <param name="updateProductDto">Partial product update data</param>
         /// <returns>Updated product with categories</returns>
+
+        [Authorize(Roles = "Admin,Partner")]
         [HttpPatch("{id}")]
         [ProducesResponseType(typeof(ApiResponse<ProductWithCategoriesDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]

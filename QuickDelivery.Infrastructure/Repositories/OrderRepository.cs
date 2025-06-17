@@ -64,6 +64,21 @@ namespace QuickDelivery.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Order>> GetOrdersByDelivererIdAsync(int delivererId)
+        {
+            return await _dbContext.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.Partner)
+                .Include(o => o.DeliveryAddress)
+                .Include(o => o.PickupAddress)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Product)
+                .Include(o => o.Delivery)
+                .Where(o => o.Delivery != null && o.Delivery.DelivererId == delivererId)
+                .OrderByDescending(o => o.CreatedAt)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Order>> GetOrdersByPartnerIdAsync(int partnerId)
         {
             return await _dbContext.Orders

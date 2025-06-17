@@ -10,6 +10,7 @@ namespace QuickDelivery.Core.Interfaces.Services
         Task<IEnumerable<OrderDto>> GetOrdersAsync();
         Task<OrderDto?> GetOrderByIdAsync(int id);
         Task<IEnumerable<OrderDto>> GetOrdersByCustomerIdAsync(int customerId);
+        Task<IEnumerable<OrderDto>> GetOrdersByDelivererIdAsync(int delivererId);
         Task<IEnumerable<OrderDto>> GetOrdersByPartnerIdAsync(int partnerId);
         Task<IEnumerable<OrderDto>> GetOrdersByStatusAsync(OrderStatus status);
         Task<OrderDto> CreateOrderAsync(CreateOrderDto orderDto);

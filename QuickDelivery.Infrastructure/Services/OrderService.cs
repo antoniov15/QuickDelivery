@@ -48,6 +48,12 @@ namespace QuickDelivery.Infrastructure.Services
             return orders.Select(MapOrderToDto);
         }
 
+        public async Task<IEnumerable<OrderDto>> GetOrdersByDelivererIdAsync(int delivererId)
+        {
+            var orders = await _orderRepository.GetOrdersByDelivererIdAsync(delivererId);
+            return orders.Select(MapOrderToDto);
+        }
+
         public async Task<IEnumerable<OrderDto>> GetOrdersByPartnerIdAsync(int partnerId)
         {
             var orders = await _orderRepository.GetOrdersByPartnerIdAsync(partnerId);

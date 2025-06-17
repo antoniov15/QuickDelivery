@@ -8,6 +8,7 @@ namespace QuickDelivery.Core.Interfaces.Repositories
         Task<IEnumerable<Order>> GetAllAsync();
         Task<Order?> GetByIdAsync(int id, bool includeRelated = true);
         Task<IEnumerable<Order>> GetOrdersByCustomerIdAsync(int customerId);
+        Task<IEnumerable<Order>> GetOrdersByDelivererIdAsync(int delivererId);
         Task<IEnumerable<Order>> GetOrdersByPartnerIdAsync(int partnerId);
         Task<IEnumerable<Order>> GetOrdersByStatusAsync(OrderStatus status);
         Task<Order> CreateAsync(Order order);

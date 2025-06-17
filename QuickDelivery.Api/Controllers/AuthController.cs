@@ -83,7 +83,7 @@ namespace QuickDelivery.Api.Controllers
         }
 
         // Pentru ruta GetUserById folosită în CreatedAtAction
-        [Authorize]
+        [Authorize(Roles = "Admin,Partner,Deliverer")]
         [HttpGet("users/{id}")]
         public async Task<ActionResult<ApiResponse<UserDto>>> GetUserById(int id)
         {
