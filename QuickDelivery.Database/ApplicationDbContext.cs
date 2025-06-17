@@ -646,6 +646,65 @@ namespace QuickDelivery.Database
                     CreatedAt = staticDate
                 }
             );
+
+            // 6. ORDERS
+            modelBuilder.Entity<Order>().HasData(
+                new Order
+                {
+                    OrderId = 1,
+                    CustomerId = 1, // John Doe
+                    PartnerId = 1,  // Delicious Restaurant
+                    OrderNumber = "ORD-2025-001",
+                    Status = OrderStatus.Delivered,
+                    TotalAmount = 43.50m,
+                    DeliveryAddressId = 3,
+                    PickupAddressId = 2,
+                    CreatedAt = staticDate
+                },
+                new Order
+                {
+                    OrderId = 2,
+                    CustomerId = 2, // Jane Smith
+                    PartnerId = 2,  // Mario's Pizza Palace
+                    OrderNumber = "ORD-2025-002",
+                    Status = OrderStatus.Pending,
+                    TotalAmount = 60.00m,
+                    DeliveryAddressId = 5,
+                    PickupAddressId = 8,
+                    CreatedAt = staticDate.AddDays(1)
+                }
+            );
+
+            // 7. ORDER ITEMS
+            modelBuilder.Entity<OrderItem>().HasData(
+                new OrderItem
+                {
+                    OrderItemId = 1,
+                    OrderId = 1,
+                    ProductId = 1,
+                    Quantity = 1,
+                    UnitPrice = 25.50m,
+                    TotalPrice = 25.50m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 2,
+                    OrderId = 1,
+                    ProductId = 2,
+                    Quantity = 1,
+                    UnitPrice = 18.00m,
+                    TotalPrice = 18.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 3,
+                    OrderId = 2,
+                    ProductId = 5,
+                    Quantity = 2,
+                    UnitPrice = 28.00m,
+                    TotalPrice = 56.00m
+                }
+            );
         }
     }
 }
