@@ -268,6 +268,7 @@ namespace QuickDelivery.Infrastructure.Services
                 Delivery = order.Delivery != null ? new DeliveryDto
                 {
                     DeliveryId = order.Delivery.DeliveryId,
+                    DelivererId = order.Delivery.DelivererId,
                     Status = order.Delivery.Status,
                     AssignedAt = order.Delivery.AssignedAt,
                     PickedUpAt = order.Delivery.PickedUpAt,

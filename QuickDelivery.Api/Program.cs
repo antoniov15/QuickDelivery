@@ -17,6 +17,7 @@ using QuickDelivery.Database.Extensions;
 using QuickDelivery.Infrastructure.Repositories;
 using QuickDelivery.Infrastructure.Services;
 using System.Text;
+using QuickDelivery.Infrastructure.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -130,7 +131,10 @@ builder.Services.AddSwaggerGen(c =>
 
 // Register custom services
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<RoleBasedDataFilter>();
+builder.Services.AddScoped<ISecureUserService, SecureUserService>();
+//builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserService>(provider => provider.GetService<ISecureUserService>());
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDeliveryService, DeliveryService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();

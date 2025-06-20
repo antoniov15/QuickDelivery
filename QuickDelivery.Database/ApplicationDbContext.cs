@@ -1079,7 +1079,7 @@ namespace QuickDelivery.Database
                     UnitPrice = 28.00m,
                     TotalPrice = 56.00m
                 },
-                // Order 3
+                // Order 3 
                 new OrderItem
                 {
                     OrderItemId = 4,

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 // ALIAS pentru a evita conflictele
 using PaginatedResultDto = QuickDelivery.Core.DTOs.Common.PaginatedResult<QuickDelivery.Core.DTOs.ProductWithCategoriesDto>;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace QuickDelivery.Api.Controllers
@@ -32,6 +33,7 @@ namespace QuickDelivery.Api.Controllers
         /// </summary>
         /// <param name="parameters">Query parameters for filtering, sorting, and pagination</param>
         /// <returns>Paginated list of products with categories</returns>
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<PaginatedResultDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]
@@ -137,6 +139,7 @@ namespace QuickDelivery.Api.Controllers
         /// <param name="id">Product ID</param>
         /// <param name="updateProductDto">Product update data</param>
         /// <returns>Updated product with categories</returns>
+        [Authorize]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ApiResponse<ProductWithCategoriesDto>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 400)]

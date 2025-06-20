@@ -26,6 +26,7 @@ namespace QuickDelivery.Api.Controllers
         /// Get all orders
         /// </summary>
         /// <returns>List of all orders</returns>
+        [Authorize(Roles = "Admin,Manager")]
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<IEnumerable<OrderDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse<object>), 500)]
