@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QuickDelivery.Api.Helpers;
 using QuickDelivery.Core.DTOs.Common;
 using QuickDelivery.Core.DTOs.Users;
 using QuickDelivery.Core.Interfaces.Services;
@@ -87,11 +88,32 @@ namespace QuickDelivery.Api.Controllers
         [HttpGet("users/{id}")]
         public async Task<ActionResult<ApiResponse<UserDto>>> GetUserById(int id)
         {
-            var user = await _userService.GetUserByIdAsync(id);
-            if (user == null)
-                return NotFound(ApiResponse<object>.ErrorResult("User not found"));
+            //var user = await _userService.GetUserByIdAsync(id);
+            //if (user == null)
+            //    return NotFound(ApiResponse<object>.ErrorResult("User not found"));
 
-            return Ok(ApiResponse<UserDto>.SuccessResult(user, "User found"));
+            //return Ok(ApiResponse<UserDto>.SuccessResult(user, "User found"));
+
+            try
+            {
+                if(!this.IsCurrentUserAuthorizedForResource(id))
+                {
+                    return Forbid();
+                }
+
+                var user = await _userService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound(ApiResponse<object>.ErrorResult("User not found"));
+                }
+
+                return Ok(ApiResponse<UserDto>.SuccessResult(user, "User found"));
+            }
+            catch
+            {
+                _logger.LogError("Error occurred while retrieving user with ID {Id}", id);
+                return StatusCode(500, ApiResponse<object>.ErrorResult("An error occurred while retrieving the user"));
+            }
         }
     }
 }

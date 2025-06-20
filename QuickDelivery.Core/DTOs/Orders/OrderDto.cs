@@ -79,6 +79,7 @@ namespace QuickDelivery.Core.DTOs.Orders
     public class DeliveryDto
     {
         public int DeliveryId { get; set; }
+        public int? DelivererId { get; set; }
         public DeliveryStatus Status { get; set; }
         public DateTime? AssignedAt { get; set; }
         public DateTime? PickedUpAt { get; set; }

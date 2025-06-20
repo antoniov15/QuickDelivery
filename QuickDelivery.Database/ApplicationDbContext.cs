@@ -199,7 +199,7 @@ namespace QuickDelivery.Database
                     CreatedAt = staticDate
                 },
 
-                // Customer 1
+                // Customer 1 -  active
                 new User
                 {
                     UserId = 3,
@@ -211,11 +211,11 @@ namespace QuickDelivery.Database
                     PasswordHash = staticPasswordHash,
                     Role = UserRole.Customer,
                     IsActive = true,
-                    IsEmailVerified = true,
+                    IsEmailVerified = true, // both active and verified
                     CreatedAt = staticDate
                 },
 
-                // Customer 2
+                // Customer 2 -  Active but unverified email
                 new User
                 {
                     UserId = 4,
@@ -226,12 +226,12 @@ namespace QuickDelivery.Database
                     PhoneNumber = "+40123456792",
                     PasswordHash = staticPasswordHash,
                     Role = UserRole.Customer,
-                    IsActive = true,
-                    IsEmailVerified = false, // Unverified email for testing
+                    IsActive = true, // active user
+                    IsEmailVerified = false, // Unverified email
                     CreatedAt = staticDate
                 },
 
-                // Deliverer 1
+                // Deliverer 1 - Active
                 new User
                 {
                     UserId = 5,
@@ -247,7 +247,7 @@ namespace QuickDelivery.Database
                     CreatedAt = staticDate
                 },
 
-                // Deliverer 2
+                // Deliverer 2 - Active
                 new User
                 {
                     UserId = 6,
@@ -279,7 +279,7 @@ namespace QuickDelivery.Database
                     CreatedAt = staticDate
                 },
 
-                // Inactive Customer (for testing)
+                // Inactive Customer
                 new User
                 {
                     UserId = 8,
@@ -290,7 +290,7 @@ namespace QuickDelivery.Database
                     PhoneNumber = "+40123456796",
                     PasswordHash = staticPasswordHash,
                     Role = UserRole.Customer,
-                    IsActive = false, // Inactive for testing
+                    IsActive = false, // inactiv
                     IsEmailVerified = true,
                     CreatedAt = staticDate
                 },
@@ -325,7 +325,72 @@ namespace QuickDelivery.Database
                     IsActive = true,
                     IsEmailVerified = true,
                     CreatedAt = staticDate,
-                    LastLoginAt = staticRecentLogin // FIXED: Now using static value
+                    LastLoginAt = staticRecentLogin 
+                },
+
+                // Third partner - inactive
+                new User
+                {
+                    UserId = 11,
+                    FirstName = "Closed",
+                    LastName = "Restaurant",
+                    Email = "closed.restaurant@email.com",
+                    Username = "closed_restaurant",
+                    PhoneNumber = "+40123456799",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Partner,
+                    IsActive = false, // Inactive partner
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Customer 3
+                new User
+                {
+                    UserId = 12,
+                    FirstName = "Alex",
+                    LastName = "Brown",
+                    Email = "alex.brown@email.com",
+                    Username = "alex_brown",
+                    PhoneNumber = "+40123456800",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Customer,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
+                },
+
+                // Customer 4 - client frecvent
+                new User
+                {
+                    UserId = 13,
+                    FirstName = "Emma",
+                    LastName = "Davis",
+                    Email = "emma.davis@email.com",
+                    Username = "emma_davis",
+                    PhoneNumber = "+40123456801",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Customer,
+                    IsActive = true,
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate,
+                    LastLoginAt = staticRecentLogin
+                },
+
+                // Deliverer 3 - inactive deliverer
+                new User
+                {
+                    UserId = 14,
+                    FirstName = "Tom",
+                    LastName = "Wilson",
+                    Email = "tom.inactive@email.com",
+                    Username = "tom_inactive",
+                    PhoneNumber = "+40123456802",
+                    PasswordHash = staticPasswordHash,
+                    Role = UserRole.Deliverer,
+                    IsActive = false, // Inactive deliverer
+                    IsEmailVerified = true,
+                    CreatedAt = staticDate
                 }
             );
 
@@ -359,6 +424,26 @@ namespace QuickDelivery.Database
                     Address = "Bulevardul Herastrau 45",
                     City = "Bucuresti",
                     PostalCode = "100007",
+                    Country = "Romania"
+                },
+                new Customer
+                {
+                    CustomerId = 4,
+                    UserId = 12, // Alex Brown
+                    Name = "Alex Brown",
+                    Address = "Strada Libertății 33",
+                    City = "Bucuresti",
+                    PostalCode = "100009",
+                    Country = "Romania"
+                },
+                new Customer
+                {
+                    CustomerId = 5,
+                    UserId = 13, // Emma Davis
+                    Name = "Emma Davis",
+                    Address = "Calea Victoriei 150",
+                    City = "Bucuresti",
+                    PostalCode = "100010",
                     Country = "Romania"
                 }
             );
@@ -470,6 +555,41 @@ namespace QuickDelivery.Database
                     Country = "Romania",
                     IsDefault = true,
                     CreatedAt = staticDate
+                },
+                new Address
+                {
+                    AddressId = 9,
+                    UserId = 12, // Alex Brown
+                    Street = "Strada Libertății 33",
+                    City = "Bucuresti",
+                    PostalCode = "100009",
+                    Country = "Romania",
+                    IsDefault = true,
+                    Instructions = "Apartament 12",
+                    CreatedAt = staticDate
+                },
+                new Address
+                {
+                    AddressId = 10,
+                    UserId = 13, // Emma Davis
+                    Street = "Calea Victoriei 150",
+                    City = "Bucuresti",
+                    PostalCode = "100010",
+                    Country = "Romania",
+                    IsDefault = true,
+                    Instructions = "Casa cu gard verde",
+                    CreatedAt = staticDate
+                },
+                new Address
+                {
+                    AddressId = 11,
+                    UserId = 11, // Closed restaurant
+                    Street = "Strada Închisă 99",
+                    City = "Bucuresti",
+                    PostalCode = "100011",
+                    Country = "Romania",
+                    IsDefault = true,
+                    CreatedAt = staticDate
                 }
             );
 
@@ -505,6 +625,22 @@ namespace QuickDelivery.Database
                     AverageRating = 4.8m,
                     TotalOrders = 0,
                     IsActive = true,
+                    CreatedAt = staticDate
+                },
+
+                // partener inactiv
+                new Partner
+                {
+                    PartnerId = 3,
+                    UserId = 11,
+                    BusinessName = "Closed Bistro",
+                    Description = "Currently closed for renovations",
+                    AddressId = 11,
+                    OpenTime = new TimeSpan(9, 0, 0),
+                    CloseTime = new TimeSpan(21, 0, 0),
+                    AverageRating = 3.2m,
+                    TotalOrders = 5,
+                    IsActive = false, // Inactive partner
                     CreatedAt = staticDate
                 }
             );
@@ -644,6 +780,94 @@ namespace QuickDelivery.Database
                     IsAvailable = true,
                     StockQuantity = 60,
                     CreatedAt = staticDate
+                },
+                // Out of stock products
+                new Product
+                {
+                    ProductId = 9,
+                    PartnerId = 1,
+                    Name = "Sold Out Pasta",
+                    Description = "Delicious pasta that's currently sold out",
+                    Price = 19.50m,
+                    Category = "Fast Food",
+                    IsAvailable = true,
+                    StockQuantity = 0, // OUT OF STOCK
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 10,
+                    PartnerId = 2,
+                    Name = "Special Pizza",
+                    Description = "Limited edition pizza - currently out of stock",
+                    Price = 35.00m,
+                    Category = "Pizza",
+                    IsAvailable = true,
+                    StockQuantity = 0, // OUT OF STOCK
+                    CreatedAt = staticDate
+                },
+                // Unavailable products
+                new Product
+                {
+                    ProductId = 11,
+                    PartnerId = 1,
+                    Name = "Seasonal Soup",
+                    Description = "Only available in winter",
+                    Price = 14.00m,
+                    Category = "Fast Food",
+                    IsAvailable = false, // NOT AVAILABLE
+                    StockQuantity = 25,
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 12,
+                    PartnerId = 2,
+                    Name = "Premium Dessert",
+                    Description = "Temporarily removed from menu",
+                    Price = 25.00m,
+                    Category = "Desserts",
+                    IsAvailable = false, // NOT AVAILABLE
+                    StockQuantity = 10,
+                    CreatedAt = staticDate
+                },
+                // Low stock products
+                new Product
+                {
+                    ProductId = 13,
+                    PartnerId = 1,
+                    Name = "Last Chance Burger",
+                    Description = "Almost sold out - only a few left",
+                    Price = 21.00m,
+                    Category = "Fast Food",
+                    IsAvailable = true,
+                    StockQuantity = 2, // LOW STOCK
+                    CreatedAt = staticDate
+                },
+                new Product
+                {
+                    ProductId = 14,
+                    PartnerId = 2,
+                    Name = "Final Slice Pizza",
+                    Description = "Last pieces available",
+                    Price = 29.00m,
+                    Category = "Pizza",
+                    IsAvailable = true,
+                    StockQuantity = 1, // VERY LOW STOCK
+                    CreatedAt = staticDate
+                },
+                // Products from inactive partner
+                new Product
+                {
+                    ProductId = 15,
+                    PartnerId = 3, // Closed Bistro
+                    Name = "Closed Special",
+                    Description = "From closed restaurant",
+                    Price = 16.00m,
+                    Category = "Fast Food",
+                    IsAvailable = false,
+                    StockQuantity = 0,
+                    CreatedAt = staticDate
                 }
             );
 
@@ -672,6 +896,157 @@ namespace QuickDelivery.Database
                     DeliveryAddressId = 5,
                     PickupAddressId = 8,
                     CreatedAt = staticDate.AddDays(1)
+                },
+                // Confirmed order
+                new Order
+                {
+                    OrderId = 3,
+                    CustomerId = 3, // Maria VIP
+                    PartnerId = 1,
+                    OrderNumber = "ORD-20250003",
+                    Status = OrderStatus.Confirmed,
+                    TotalAmount = 37.50m,
+                    SubTotal = 32.50m,
+                    DeliveryFee = 5.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 7,
+                    PickupAddressId = 2,
+                    CreatedAt = staticDate.AddDays(2),
+                    EstimatedDeliveryTime = staticDate.AddDays(2).AddMinutes(40),
+                    Notes = "VIP customer - priority handling"
+                },
+                // Preparing order
+                new Order
+                {
+                    OrderId = 4,
+                    CustomerId = 4, // Alex Brown
+                    PartnerId = 2,
+                    OrderNumber = "ORD-20250004",
+                    Status = OrderStatus.Preparing,
+                    TotalAmount = 50.00m,
+                    SubTotal = 45.00m,
+                    DeliveryFee = 5.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 9,
+                    PickupAddressId = 8,
+                    CreatedAt = staticDate.AddDays(3),
+                    EstimatedDeliveryTime = staticDate.AddDays(3).AddMinutes(35),
+                    SpecialInstructions = "Extra spicy"
+                },
+                // Ready for pickup
+                new Order
+                {
+                    OrderId = 5,
+                    CustomerId = 5, // Emma Davis
+                    PartnerId = 1,
+                    OrderNumber = "ORD-20250005",
+                    Status = OrderStatus.ReadyForPickup,
+                    TotalAmount = 29.50m,
+                    SubTotal = 25.50m,
+                    DeliveryFee = 4.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 10,
+                    PickupAddressId = 2,
+                    CreatedAt = staticDate.AddDays(4),
+                    EstimatedDeliveryTime = staticDate.AddDays(4).AddMinutes(25)
+                },
+                // In transit
+                new Order
+                {
+                    OrderId = 6,
+                    CustomerId = 1, // John Doe (repeat customer)
+                    PartnerId = 2,
+                    OrderNumber = "ORD-20250006",
+                    Status = OrderStatus.InTransit,
+                    TotalAmount = 45.00m,
+                    SubTotal = 40.00m,
+                    DeliveryFee = 5.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 4, // Work address
+                    PickupAddressId = 8,
+                    CreatedAt = staticDate.AddDays(5),
+                    EstimatedDeliveryTime = staticDate.AddDays(5).AddMinutes(30),
+                    Notes = "Delivery to office building"
+                },
+                // Cancelled order
+                new Order
+                {
+                    OrderId = 7,
+                    CustomerId = 2, // Jane Smith
+                    PartnerId = 1,
+                    OrderNumber = "ORD-20250007",
+                    Status = OrderStatus.Cancelled,
+                    TotalAmount = 33.00m,
+                    SubTotal = 28.00m,
+                    DeliveryFee = 5.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 5,
+                    PickupAddressId = 2,
+                    CreatedAt = staticDate.AddDays(6),
+                    Notes = "Customer cancelled - out of stock item"
+                },
+                // Refunded order
+                new Order
+                {
+                    OrderId = 8,
+                    CustomerId = 3, // Maria VIP
+                    PartnerId = 2,
+                    OrderNumber = "ORD-20250008",
+                    Status = OrderStatus.Refunded,
+                    TotalAmount = 52.00m,
+                    SubTotal = 47.00m,
+                    DeliveryFee = 5.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 7,
+                    PickupAddressId = 8,
+                    CreatedAt = staticDate.AddDays(7),
+                    ActualDeliveryTime = staticDate.AddDays(7).AddHours(1),
+                    Notes = "Delivered but customer was not satisfied - full refund issued"
+                },
+                // Another pending order for testing
+                new Order
+                {
+                    OrderId = 9,
+                    CustomerId = 4, // Alex Brown
+                    PartnerId = 1,
+                    OrderNumber = "ORD-20250009",
+                    Status = OrderStatus.Pending,
+                    TotalAmount = 21.00m,
+                    SubTotal = 18.00m,
+                    DeliveryFee = 3.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 9,
+                    PickupAddressId = 2,
+                    CreatedAt = staticDate.AddDays(8),
+                    EstimatedDeliveryTime = staticDate.AddDays(8).AddMinutes(20)
+                },
+                // Large order - delivered
+                new Order
+                {
+                    OrderId = 10,
+                    CustomerId = 5, // Emma Davis
+                    PartnerId = 2,
+                    OrderNumber = "ORD-20250010",
+                    Status = OrderStatus.Delivered,
+                    TotalAmount = 98.50m,
+                    SubTotal = 89.50m,
+                    DeliveryFee = 9.00m,
+                    Tax = 0m,
+                    Discount = 0m,
+                    DeliveryAddressId = 10,
+                    PickupAddressId = 8,
+                    CreatedAt = staticDate.AddDays(9),
+                    ActualDeliveryTime = staticDate.AddDays(9).AddMinutes(50),
+                    EstimatedDeliveryTime = staticDate.AddDays(9).AddMinutes(45),
+                    Notes = "Large family order",
+                    SpecialInstructions = "Ring doorbell twice"
                 }
             );
 
@@ -681,7 +1056,7 @@ namespace QuickDelivery.Database
                 {
                     OrderItemId = 1,
                     OrderId = 1,
-                    ProductId = 1,
+                    ProductId = 1, // Margherita Pizza
                     Quantity = 1,
                     UnitPrice = 25.50m,
                     TotalPrice = 25.50m
@@ -690,7 +1065,7 @@ namespace QuickDelivery.Database
                 {
                     OrderItemId = 2,
                     OrderId = 1,
-                    ProductId = 2,
+                    ProductId = 2, // Cheeseburger
                     Quantity = 1,
                     UnitPrice = 18.00m,
                     TotalPrice = 18.00m
@@ -699,10 +1074,155 @@ namespace QuickDelivery.Database
                 {
                     OrderItemId = 3,
                     OrderId = 2,
-                    ProductId = 5,
+                    ProductId = 5, // Pepperoni Pizza
                     Quantity = 2,
                     UnitPrice = 28.00m,
                     TotalPrice = 56.00m
+                },
+                // Order 3 
+                new OrderItem
+                {
+                    OrderItemId = 4,
+                    OrderId = 3,
+                    ProductId = 4, // Chocolate Cake
+                    Quantity = 1,
+                    UnitPrice = 15.00m,
+                    TotalPrice = 15.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 5,
+                    OrderId = 3,
+                    ProductId = 7, // Tiramisu
+                    Quantity = 1,
+                    UnitPrice = 18.00m,
+                    TotalPrice = 18.00m
+                },
+                // Order 4 items
+                new OrderItem
+                {
+                    OrderItemId = 6,
+                    OrderId = 4,
+                    ProductId = 6, // Quattro Stagioni
+                    Quantity = 1,
+                    UnitPrice = 32.00m,
+                    TotalPrice = 32.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 7,
+                    OrderId = 4,
+                    ProductId = 8, // Garlic Bread
+                    Quantity = 1,
+                    UnitPrice = 12.00m,
+                    TotalPrice = 12.00m
+                },
+                // Order 5 items
+                new OrderItem
+                {
+                    OrderItemId = 8,
+                    OrderId = 5,
+                    ProductId = 1, // Margherita Pizza
+                    Quantity = 1,
+                    UnitPrice = 25.50m,
+                    TotalPrice = 25.50m
+                },
+                // Order 6 items
+                new OrderItem
+                {
+                    OrderItemId = 9,
+                    OrderId = 6,
+                    ProductId = 5, // Pepperoni Pizza
+                    Quantity = 1,
+                    UnitPrice = 28.00m,
+                    TotalPrice = 28.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 10,
+                    OrderId = 6,
+                    ProductId = 8, // Garlic Bread
+                    Quantity = 1,
+                    UnitPrice = 12.00m,
+                    TotalPrice = 12.00m
+                },
+                // Order 7 items (cancelled)
+                new OrderItem
+                {
+                    OrderItemId = 11,
+                    OrderId = 7,
+                    ProductId = 3, // Chicken Pad Thai
+                    Quantity = 1,
+                    UnitPrice = 22.00m,
+                    TotalPrice = 22.00m,
+                    SpecialInstructions = "No spicy"
+                },
+                new OrderItem
+                {
+                    OrderItemId = 12,
+                    OrderId = 7,
+                    ProductId = 4, // Chocolate Cake
+                    Quantity = 1,
+                    UnitPrice = 15.00m,
+                    TotalPrice = 15.00m
+                },
+                // Order 8 items (refunded)
+                new OrderItem
+                {
+                    OrderItemId = 13,
+                    OrderId = 8,
+                    ProductId = 6, // Quattro Stagioni
+                    Quantity = 1,
+                    UnitPrice = 32.00m,
+                    TotalPrice = 32.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 14,
+                    OrderId = 8,
+                    ProductId = 7, // Tiramisu
+                    Quantity = 1,
+                    UnitPrice = 18.00m,
+                    TotalPrice = 18.00m
+                },
+                // Order 9 items
+                new OrderItem
+                {
+                    OrderItemId = 15,
+                    OrderId = 9,
+                    ProductId = 2, // Cheeseburger
+                    Quantity = 1,
+                    UnitPrice = 18.00m,
+                    TotalPrice = 18.00m,
+                    SpecialInstructions = "Extra cheese"
+                },
+                // Order 10 items (large order)
+                new OrderItem
+                {
+                    OrderItemId = 16,
+                    OrderId = 10,
+                    ProductId = 5, // Pepperoni Pizza
+                    Quantity = 2,
+                    UnitPrice = 28.00m,
+                    TotalPrice = 56.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 17,
+                    OrderId = 10,
+                    ProductId = 6, // Quattro Stagioni
+                    Quantity = 1,
+                    UnitPrice = 32.00m,
+                    TotalPrice = 32.00m
+                },
+                new OrderItem
+                {
+                    OrderItemId = 18,
+                    OrderId = 10,
+                    ProductId = 8, // Garlic Bread
+                    Quantity = 1,
+                    UnitPrice = 12.00m,
+                    TotalPrice = 12.00m
                 }
             );
         }

@@ -13,9 +13,9 @@ namespace QuickDelivery.Infrastructure.Services
 {
     public class UserService : IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly ITokenService _tokenService;
-        private readonly JwtOptions _jwtOptions;
+        protected readonly IUserRepository _userRepository;
+        protected readonly ITokenService _tokenService;
+        protected readonly JwtOptions _jwtOptions;
 
         public UserService(
             IUserRepository userRepository,
@@ -197,7 +197,7 @@ namespace QuickDelivery.Infrastructure.Services
 
         #region Metode helper
 
-        private UserDto MapUserToDto(User user)
+        protected UserDto MapUserToDto(User user)
         {
             return new UserDto
             {
@@ -220,12 +220,12 @@ namespace QuickDelivery.Infrastructure.Services
             };
         }
 
-        private string HashPassword(string password)
+        protected string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
-        private bool VerifyPassword(string password, string passwordHash)
+        protected bool VerifyPassword(string password, string passwordHash)
         {
             try
             {
