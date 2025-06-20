@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickDelivery.Database;
 
@@ -11,9 +12,11 @@ using QuickDelivery.Database;
 namespace QuickDelivery.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620131520_ProduseModificate")]
+    partial class ProduseModificate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,41 +185,6 @@ namespace QuickDelivery.Database.Migrations
                             PostalCode = "100008",
                             Street = "Strada Pizzeriei 12",
                             UserId = 9
-                        },
-                        new
-                        {
-                            AddressId = 9,
-                            City = "Bucuresti",
-                            Country = "Romania",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Instructions = "Apartament 12",
-                            IsDefault = true,
-                            PostalCode = "100009",
-                            Street = "Strada Libertății 33",
-                            UserId = 12
-                        },
-                        new
-                        {
-                            AddressId = 10,
-                            City = "Bucuresti",
-                            Country = "Romania",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Instructions = "Casa cu gard verde",
-                            IsDefault = true,
-                            PostalCode = "100010",
-                            Street = "Calea Victoriei 150",
-                            UserId = 13
-                        },
-                        new
-                        {
-                            AddressId = 11,
-                            City = "Bucuresti",
-                            Country = "Romania",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            IsDefault = true,
-                            PostalCode = "100011",
-                            Street = "Strada Închisă 99",
-                            UserId = 11
                         });
                 });
 
@@ -352,26 +320,6 @@ namespace QuickDelivery.Database.Migrations
                             Name = "Maria Rodriguez",
                             PostalCode = "100007",
                             UserId = 10
-                        },
-                        new
-                        {
-                            CustomerId = 4,
-                            Address = "Strada Libertății 33",
-                            City = "Bucuresti",
-                            Country = "Romania",
-                            Name = "Alex Brown",
-                            PostalCode = "100009",
-                            UserId = 12
-                        },
-                        new
-                        {
-                            CustomerId = 5,
-                            Address = "Calea Victoriei 150",
-                            City = "Bucuresti",
-                            Country = "Romania",
-                            Name = "Emma Davis",
-                            PostalCode = "100010",
-                            UserId = 13
                         });
                 });
 
@@ -544,149 +492,6 @@ namespace QuickDelivery.Database.Migrations
                             SubTotal = 0m,
                             Tax = 0m,
                             TotalAmount = 60.00m
-                        },
-                        new
-                        {
-                            OrderId = 3,
-                            CreatedAt = new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 3,
-                            DeliveryAddressId = 7,
-                            DeliveryFee = 5.00m,
-                            Discount = 0m,
-                            EstimatedDeliveryTime = new DateTime(2024, 1, 3, 0, 40, 0, 0, DateTimeKind.Utc),
-                            Notes = "VIP customer - priority handling",
-                            OrderNumber = "ORD-20250003",
-                            PartnerId = 1,
-                            PickupAddressId = 2,
-                            Status = 2,
-                            SubTotal = 32.50m,
-                            Tax = 0m,
-                            TotalAmount = 37.50m
-                        },
-                        new
-                        {
-                            OrderId = 4,
-                            CreatedAt = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 4,
-                            DeliveryAddressId = 9,
-                            DeliveryFee = 5.00m,
-                            Discount = 0m,
-                            EstimatedDeliveryTime = new DateTime(2024, 1, 4, 0, 35, 0, 0, DateTimeKind.Utc),
-                            OrderNumber = "ORD-20250004",
-                            PartnerId = 2,
-                            PickupAddressId = 8,
-                            SpecialInstructions = "Extra spicy",
-                            Status = 3,
-                            SubTotal = 45.00m,
-                            Tax = 0m,
-                            TotalAmount = 50.00m
-                        },
-                        new
-                        {
-                            OrderId = 5,
-                            CreatedAt = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 5,
-                            DeliveryAddressId = 10,
-                            DeliveryFee = 4.00m,
-                            Discount = 0m,
-                            EstimatedDeliveryTime = new DateTime(2024, 1, 5, 0, 25, 0, 0, DateTimeKind.Utc),
-                            OrderNumber = "ORD-20250005",
-                            PartnerId = 1,
-                            PickupAddressId = 2,
-                            Status = 4,
-                            SubTotal = 25.50m,
-                            Tax = 0m,
-                            TotalAmount = 29.50m
-                        },
-                        new
-                        {
-                            OrderId = 6,
-                            CreatedAt = new DateTime(2024, 1, 6, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 1,
-                            DeliveryAddressId = 4,
-                            DeliveryFee = 5.00m,
-                            Discount = 0m,
-                            EstimatedDeliveryTime = new DateTime(2024, 1, 6, 0, 30, 0, 0, DateTimeKind.Utc),
-                            Notes = "Delivery to office building",
-                            OrderNumber = "ORD-20250006",
-                            PartnerId = 2,
-                            PickupAddressId = 8,
-                            Status = 5,
-                            SubTotal = 40.00m,
-                            Tax = 0m,
-                            TotalAmount = 45.00m
-                        },
-                        new
-                        {
-                            OrderId = 7,
-                            CreatedAt = new DateTime(2024, 1, 7, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 2,
-                            DeliveryAddressId = 5,
-                            DeliveryFee = 5.00m,
-                            Discount = 0m,
-                            Notes = "Customer cancelled - out of stock item",
-                            OrderNumber = "ORD-20250007",
-                            PartnerId = 1,
-                            PickupAddressId = 2,
-                            Status = 7,
-                            SubTotal = 28.00m,
-                            Tax = 0m,
-                            TotalAmount = 33.00m
-                        },
-                        new
-                        {
-                            OrderId = 8,
-                            ActualDeliveryTime = new DateTime(2024, 1, 8, 1, 0, 0, 0, DateTimeKind.Utc),
-                            CreatedAt = new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 3,
-                            DeliveryAddressId = 7,
-                            DeliveryFee = 5.00m,
-                            Discount = 0m,
-                            Notes = "Delivered but customer was not satisfied - full refund issued",
-                            OrderNumber = "ORD-20250008",
-                            PartnerId = 2,
-                            PickupAddressId = 8,
-                            Status = 8,
-                            SubTotal = 47.00m,
-                            Tax = 0m,
-                            TotalAmount = 52.00m
-                        },
-                        new
-                        {
-                            OrderId = 9,
-                            CreatedAt = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 4,
-                            DeliveryAddressId = 9,
-                            DeliveryFee = 3.00m,
-                            Discount = 0m,
-                            EstimatedDeliveryTime = new DateTime(2024, 1, 9, 0, 20, 0, 0, DateTimeKind.Utc),
-                            OrderNumber = "ORD-20250009",
-                            PartnerId = 1,
-                            PickupAddressId = 2,
-                            Status = 1,
-                            SubTotal = 18.00m,
-                            Tax = 0m,
-                            TotalAmount = 21.00m
-                        },
-                        new
-                        {
-                            OrderId = 10,
-                            ActualDeliveryTime = new DateTime(2024, 1, 10, 0, 50, 0, 0, DateTimeKind.Utc),
-                            CreatedAt = new DateTime(2024, 1, 10, 0, 0, 0, 0, DateTimeKind.Utc),
-                            CustomerId = 5,
-                            DeliveryAddressId = 10,
-                            DeliveryFee = 9.00m,
-                            Discount = 0m,
-                            EstimatedDeliveryTime = new DateTime(2024, 1, 10, 0, 45, 0, 0, DateTimeKind.Utc),
-                            Notes = "Large family order",
-                            OrderNumber = "ORD-20250010",
-                            PartnerId = 2,
-                            PickupAddressId = 8,
-                            SpecialInstructions = "Ring doorbell twice",
-                            Status = 6,
-                            SubTotal = 89.50m,
-                            Tax = 0m,
-                            TotalAmount = 98.50m
                         });
                 });
 
@@ -752,143 +557,6 @@ namespace QuickDelivery.Database.Migrations
                             Quantity = 2,
                             TotalPrice = 56.00m,
                             UnitPrice = 28.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 4,
-                            OrderId = 3,
-                            ProductId = 4,
-                            Quantity = 1,
-                            TotalPrice = 15.00m,
-                            UnitPrice = 15.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 5,
-                            OrderId = 3,
-                            ProductId = 7,
-                            Quantity = 1,
-                            TotalPrice = 18.00m,
-                            UnitPrice = 18.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 6,
-                            OrderId = 4,
-                            ProductId = 6,
-                            Quantity = 1,
-                            TotalPrice = 32.00m,
-                            UnitPrice = 32.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 7,
-                            OrderId = 4,
-                            ProductId = 8,
-                            Quantity = 1,
-                            TotalPrice = 12.00m,
-                            UnitPrice = 12.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 8,
-                            OrderId = 5,
-                            ProductId = 1,
-                            Quantity = 1,
-                            TotalPrice = 25.50m,
-                            UnitPrice = 25.50m
-                        },
-                        new
-                        {
-                            OrderItemId = 9,
-                            OrderId = 6,
-                            ProductId = 5,
-                            Quantity = 1,
-                            TotalPrice = 28.00m,
-                            UnitPrice = 28.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 10,
-                            OrderId = 6,
-                            ProductId = 8,
-                            Quantity = 1,
-                            TotalPrice = 12.00m,
-                            UnitPrice = 12.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 11,
-                            OrderId = 7,
-                            ProductId = 3,
-                            Quantity = 1,
-                            SpecialInstructions = "No spicy",
-                            TotalPrice = 22.00m,
-                            UnitPrice = 22.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 12,
-                            OrderId = 7,
-                            ProductId = 4,
-                            Quantity = 1,
-                            TotalPrice = 15.00m,
-                            UnitPrice = 15.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 13,
-                            OrderId = 8,
-                            ProductId = 6,
-                            Quantity = 1,
-                            TotalPrice = 32.00m,
-                            UnitPrice = 32.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 14,
-                            OrderId = 8,
-                            ProductId = 7,
-                            Quantity = 1,
-                            TotalPrice = 18.00m,
-                            UnitPrice = 18.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 15,
-                            OrderId = 9,
-                            ProductId = 2,
-                            Quantity = 1,
-                            SpecialInstructions = "Extra cheese",
-                            TotalPrice = 18.00m,
-                            UnitPrice = 18.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 16,
-                            OrderId = 10,
-                            ProductId = 5,
-                            Quantity = 2,
-                            TotalPrice = 56.00m,
-                            UnitPrice = 28.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 17,
-                            OrderId = 10,
-                            ProductId = 6,
-                            Quantity = 1,
-                            TotalPrice = 32.00m,
-                            UnitPrice = 32.00m
-                        },
-                        new
-                        {
-                            OrderItemId = 18,
-                            OrderId = 10,
-                            ProductId = 8,
-                            Quantity = 1,
-                            TotalPrice = 12.00m,
-                            UnitPrice = 12.00m
                         });
                 });
 
@@ -980,20 +648,6 @@ namespace QuickDelivery.Database.Migrations
                             TotalOrders = 0,
                             UserId = 9,
                             Website = "https://mariospizza.com"
-                        },
-                        new
-                        {
-                            PartnerId = 3,
-                            AddressId = 11,
-                            AverageRating = 3.2m,
-                            BusinessName = "Closed Bistro",
-                            CloseTime = new TimeSpan(0, 21, 0, 0, 0),
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Currently closed for renovations",
-                            IsActive = false,
-                            OpenTime = new TimeSpan(0, 9, 0, 0, 0),
-                            TotalOrders = 5,
-                            UserId = 11
                         });
                 });
 
@@ -1188,90 +842,6 @@ namespace QuickDelivery.Database.Migrations
                             PartnerId = 2,
                             Price = 12.00m,
                             StockQuantity = 60
-                        },
-                        new
-                        {
-                            ProductId = 9,
-                            Category = "Fast Food",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Delicious pasta that's currently sold out",
-                            IsAvailable = true,
-                            Name = "Sold Out Pasta",
-                            PartnerId = 1,
-                            Price = 19.50m,
-                            StockQuantity = 0
-                        },
-                        new
-                        {
-                            ProductId = 10,
-                            Category = "Pizza",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Limited edition pizza - currently out of stock",
-                            IsAvailable = true,
-                            Name = "Special Pizza",
-                            PartnerId = 2,
-                            Price = 35.00m,
-                            StockQuantity = 0
-                        },
-                        new
-                        {
-                            ProductId = 11,
-                            Category = "Fast Food",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Only available in winter",
-                            IsAvailable = false,
-                            Name = "Seasonal Soup",
-                            PartnerId = 1,
-                            Price = 14.00m,
-                            StockQuantity = 25
-                        },
-                        new
-                        {
-                            ProductId = 12,
-                            Category = "Desserts",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Temporarily removed from menu",
-                            IsAvailable = false,
-                            Name = "Premium Dessert",
-                            PartnerId = 2,
-                            Price = 25.00m,
-                            StockQuantity = 10
-                        },
-                        new
-                        {
-                            ProductId = 13,
-                            Category = "Fast Food",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Almost sold out - only a few left",
-                            IsAvailable = true,
-                            Name = "Last Chance Burger",
-                            PartnerId = 1,
-                            Price = 21.00m,
-                            StockQuantity = 2
-                        },
-                        new
-                        {
-                            ProductId = 14,
-                            Category = "Pizza",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "Last pieces available",
-                            IsAvailable = true,
-                            Name = "Final Slice Pizza",
-                            PartnerId = 2,
-                            Price = 29.00m,
-                            StockQuantity = 1
-                        },
-                        new
-                        {
-                            ProductId = 15,
-                            Category = "Fast Food",
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Description = "From closed restaurant",
-                            IsAvailable = false,
-                            Name = "Closed Special",
-                            PartnerId = 3,
-                            Price = 16.00m,
-                            StockQuantity = 0
                         });
                 });
 
@@ -1481,63 +1051,6 @@ namespace QuickDelivery.Database.Migrations
                             PhoneNumber = "+40123456798",
                             Role = 1,
                             Username = "maria_vip"
-                        },
-                        new
-                        {
-                            UserId = 11,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "closed.restaurant@email.com",
-                            FirstName = "Closed",
-                            IsActive = false,
-                            IsEmailVerified = true,
-                            LastName = "Restaurant",
-                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
-                            PhoneNumber = "+40123456799",
-                            Role = 3,
-                            Username = "closed_restaurant"
-                        },
-                        new
-                        {
-                            UserId = 12,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "alex.brown@email.com",
-                            FirstName = "Alex",
-                            IsActive = true,
-                            IsEmailVerified = true,
-                            LastName = "Brown",
-                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
-                            PhoneNumber = "+40123456800",
-                            Role = 1,
-                            Username = "alex_brown"
-                        },
-                        new
-                        {
-                            UserId = 13,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "emma.davis@email.com",
-                            FirstName = "Emma",
-                            IsActive = true,
-                            IsEmailVerified = true,
-                            LastLoginAt = new DateTime(2024, 6, 15, 10, 30, 0, 0, DateTimeKind.Utc),
-                            LastName = "Davis",
-                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
-                            PhoneNumber = "+40123456801",
-                            Role = 1,
-                            Username = "emma_davis"
-                        },
-                        new
-                        {
-                            UserId = 14,
-                            CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "tom.inactive@email.com",
-                            FirstName = "Tom",
-                            IsActive = false,
-                            IsEmailVerified = true,
-                            LastName = "Wilson",
-                            PasswordHash = "$2a$11$bfPciUVybJ3vtJOW.5JvQu6sYqgf1wu76PbwsIlYByyzVTZ6KsJkO",
-                            PhoneNumber = "+40123456802",
-                            Role = 2,
-                            Username = "tom_inactive"
                         });
                 });
 
